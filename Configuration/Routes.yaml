@@ -1,0 +1,42 @@
+#                      #
+# Routes configuration #
+#                      #
+
+-
+  name: 'Admin Area'
+  uriPattern: 'manage'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Standard'
+    '@action':     'index'
+    '@format':     'html'
+
+-
+  name: 'Appointments object'
+  uriPattern: '{@controller}/{appointment}/{@action}'
+  defaults:
+    '@package': 'Ecom.Terminal'
+  appendExceedingArguments: true
+  routeParts:
+      appointment:
+        objectType: 'Ecom\Terminal\Domain\Model\Appointment'
+        uriPattern: '{name}'
+
+-
+  name: 'default'
+  uriPattern: '{@controller}/{@action}'
+  defaults:
+    '@package': 'Ecom.Terminal'
+  appendExceedingArguments: true
+
+##
+# Fallback route
+
+-
+  name: 'fallback'
+  uriPattern: ''
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Appointment'
+    '@action':     'index'
+    '@format':     'html'

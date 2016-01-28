@@ -1,0 +1,74 @@
+<f:layout name="Default" />
+
+<f:section name="Title">New appointment</f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <f:render partial="FormErrors" arguments="{for: 'newAppointment'}" />
+        <div class="row">
+            <h1>New appointment</h1>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <f:form action="create" objectName="newAppointment">
+                <div class="form-group">
+                    <label for="name">Title of appointment</label>
+                    <f:form.textfield property="name" class="form-control" type="date" id="name" />
+                </div>
+                <div class="form-group">
+                    <label for="starttime">Appointment goes from</label>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <f:form.textfield property="starttime" class="form-control js-datepicker time" type="date" id="starttime" />
+                        </div>
+                        <div class="col-xs-1 text-center">
+                            <label for="endtime">to</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <f:form.textfield property="endtime" class="form-control js-datepicker time" type="date" id="endtime" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="displayStarttime">Display appointment from</label>
+                    <div class="row">
+                        <div class="col-xs-3">
+                            <f:form.textfield property="displayStarttime" class="form-control js-datepicker time" type="date" id="displayStarttime" />
+                        </div>
+                        <div class="col-xs-1 text-center">
+                            <label for="displayEndtime">to</label>
+                        </div>
+                        <div class="col-xs-3">
+                            <f:form.textfield property="displayEndtime" class="form-control js-datepicker time" type="date" id="displayEndtime" />
+                        </div>
+                    </div>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="form-group">
+                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-envelope-o fa-fw"></i> <f:translate id="submit.newAppointment" /></f:form.button>
+                </div>
+                <f:form.hidden property="image" />
+            </f:form>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <f:link.action action="new" controller="Participant" class="btn btn-default" arguments="{appointment: newAppointment}" target="_blank"><i class="fa fa-user fa-fw"></i> Add Participant</f:link.action>
+    </div>
+
+    <script>
+        $(function() {
+            $('.js-datepicker').each(function() {
+                $(this)
+                    .datetimepicker({
+                                        format: 'Y-m-d H:i',
+                                        timepicker: $(this).hasClass('time')
+                                    });
+            });
+            $('#starttime').on('change', function() {
+                $('#displayStarttime').val($(this).val());
+            });
+            $('#endtime').on('change', function() {
+                $('#displayEndtime').val($(this).val());
+            });
+        });
+    </script>
+</f:section>

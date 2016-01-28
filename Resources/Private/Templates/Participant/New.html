@@ -1,0 +1,26 @@
+<f:layout name="Default" />
+
+<f:section name="Title">New participant</f:section>
+
+<f:section name="Content">
+    <p>Just fill out the following form to create a new participant:</p>
+
+    <f:form action="create" objectName="newParticipant">
+        <ol>
+            <li>
+                <label for="salutation">Salutation</label>
+                <f:form.textfield property="salutation" type="date" id="salutation" />
+            </li>
+            <li>
+                <label for="name">Name</label>
+                <f:form.textfield property="name" id="name" />
+            </li>
+
+            <li>
+                <f:form.submit value="Create" />
+            </li>
+        </ol>
+    </f:form>
+
+    <a href="javascript:window.close()">Close window</a>
+</f:section>
