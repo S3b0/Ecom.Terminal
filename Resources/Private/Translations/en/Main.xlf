@@ -3,9 +3,37 @@
     <file source-language="en" datatype="plaintext" original="messages" date="2015-11-13T11:48:47Z" product-name="Ecom.Terminal">
         <header/>
         <body>
-            <!-- Mails -->
+            <!-- GENERIC -->
+            <trans-unit id="name" xml:space="preserve">
+                <source>name</source>
+            </trans-unit>
+            <trans-unit id="participants" xml:space="preserve">
+                <source>Participants</source>
+            </trans-unit>
+            <trans-unit id="gender0" xml:space="preserve">
+                <source>Mr.</source>
+            </trans-unit>
+            <trans-unit id="gender1" xml:space="preserve">
+                <source>Ms.</source>
+            </trans-unit>
+            <trans-unit id="gender2" xml:space="preserve">
+                <source>Mrs.</source>
+            </trans-unit>
+
+            <!-- BUTTONS -->
             <trans-unit id="submit.newAppointment" xml:space="preserve">
-                    <source>Add Appointment</source>
+                <source>Add appointment</source>
+            </trans-unit>
+            <trans-unit id="submit.saveAppointment" xml:space="preserve">
+                <source>Save appointment</source>
+            </trans-unit>
+
+            <!-- ADMIN AREA -->
+            <trans-unit id="adm.starttime" xml:space="preserve">
+                <source>Starting</source>
+            </trans-unit>
+            <trans-unit id="adm.endtime" xml:space="preserve">
+                <source>Ending</source>
             </trans-unit>
         </body>
     </file>

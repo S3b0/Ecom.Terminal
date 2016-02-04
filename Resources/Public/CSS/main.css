@@ -1,0 +1,35 @@
+html {
+	-webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+body {
+	font-family: "Roboto Condensed", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	background-color: #fff;
+}
+
+#user-panel {
+	background-color: #231f20;
+	box-shadow: 0 0 15px #3c3c3c;
+	height: 54px;
+	margin-bottom: 1em;
+	padding: 10px;
+	width: 100%;
+}
+
+#user-panel.sticky {
+	position: fixed;
+	top: 0;
+}
+
+#user-panel-inner {
+	color: #fff;
+	margin: auto;
+	text-align: right;
+	/* container width! adopt to @media rules, see TWBS */
+	width: 1170px;
+}
+
+.flashmessages {
+	margin: 1em auto;
+}

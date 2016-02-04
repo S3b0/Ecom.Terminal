@@ -4,22 +4,40 @@
         <meta charset="utf-8">
         <title><f:render section="Title" /></title>
         <f:base />
-        <!-- dateTime Picker CSS -->
-        <link rel="stylesheet" href="{f:uri.resource(path: 'CSS/jquery.datetimepicker.css')}">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'CSS/main.css')}" />
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-        <!-- TWBS: Latest compiled and minified CSS -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-        <!-- TWBS: Optional theme -->
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+        <!-- TWBS: minified CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/bootstrap/dist/css/bootstrap.min.css')}">
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-        <!-- dateTime Picker JS -->
-        <script src="{f:uri.resource(path: 'JavaScript/jquery.datetimepicker.full.min.js')}"></script>
-        <!-- TWBS: Latest compiled and minified JavaScript -->
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+        <!-- TWBS: minified JavaScript -->
+        <script src="{f:uri.resource(path: 'bower_components/bootstrap/dist/js/bootstrap.min.js')}"></script>
+        <f:render section="Styles" />
+        <f:render section="HeaderJS" />
     </head>
     <body>
+        <f:security.ifAuthenticated>
+            <div id="user-panel">
+                <div id="user-panel-inner">
+                    <i class="fa fa-user fa-fw"></i> {user} &nbsp; &nbsp;
+                    <f:link.action action="logout" controller="Authentication" class="btn btn-danger">
+                        <i class="fa fa-sign-out fa-fw"></i> Logout
+                    </f:link.action>
+                </div>
+            </div>
+        </f:security.ifAuthenticated>
         <f:render section="Content" />
+        <f:security.ifAuthenticated>
+            <script>function f(){var e=$(window).scrollTop(),d=1,g=$("#user-panel");if(e>d){g.addClass("sticky").siblings().first().css("padding-top",54)}else{g.removeClass("sticky").siblings().first().css("padding-top",0)}}$(function(){$(window).scroll(f);f()});</script>
+        </f:security.ifAuthenticated>
+        <script>
+            $(function() {
+                $('.flashmessages > div').each(function(e, f) {
+                    $(this).delay((e * 1000) + 5000).slideUp({duration: 250});
+                });
+            });
+        </script>
     </body>
 </html>

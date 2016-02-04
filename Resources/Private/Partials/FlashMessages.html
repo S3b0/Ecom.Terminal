@@ -1,0 +1,14 @@
+{namespace ecom=S3b0\ViewHelperCollection\ViewHelpers}
+<f:flashMessages as="flashMessages">
+	<div class="row flashmessages">
+		<f:for each="{flashMessages}" as="flashMessage">
+			<div class="alert alert-{ecom:translateSeverity(value: flashMessage.severity)} alert-dismissible" role="alert">
+				<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<f:if condition="{flashMessage.title}">
+					<h4>{flashMessage.title}</h4>
+				</f:if>
+				{flashMessage.message}
+			</div>
+		</f:for>
+	</div>
+</f:flashMessages>

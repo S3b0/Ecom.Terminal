@@ -8,9 +8,15 @@ namespace Ecom\Terminal\Controller;
 use TYPO3\Flow\Annotations as Flow;
 use TYPO3\Flow\Mvc\Controller\ActionController;
 use Ecom\Terminal\Domain\Model\Appointment;
+use Ecom\Terminal\Domain\Model\Participant;
 
 class AppointmentController extends ActionController
 {
+    /**
+     * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
+     * @Flow\Inject
+     */
+    protected $authenticationManager;
 
     /**
      * @Flow\Inject
@@ -18,26 +24,32 @@ class AppointmentController extends ActionController
      */
     protected $appointmentRepository;
 
-    protected $limitedAccessActions = [ 'new', 'create', 'edit', 'update', 'delete' ];
+    /**
+     * @Flow\Inject
+     * @var \Ecom\Terminal\Domain\Repository\ParticipantRepository
+     */
+    protected $participantRepository;
 
     /**
      * Initializes the controller before invoking an action method.
      *
-     * @return void
+     * @throws \TYPO3\Flow\Security\Exception\AuthenticationRequiredException
      */
     public function initializeAction()
     {
-        if (in_array($this->request->getControllerActionName(), $this->limitedAccessActions)) {
-            /**
-             * Ensure user is in the same network
-             * According to IP-mask 255.255.255.0
-             */
-            $server = explode('.', $_SERVER['SERVER_ADDR']);
-            array_pop($server);
-            if (sizeof($server) && !preg_match('/^' . implode('\.', $server) . '/i', $_SERVER['REMOTE_ADDR'])) {
-                die('Access denied');
-            }
+        if ($this->authenticationManager->isAuthenticated() === false) {
+            $this->redirect('login', 'Authentication');
         }
+    }
+
+    /**
+     * Initializes the view before invoking an action method.
+     *
+     * @param \TYPO3\Flow\Mvc\View\ViewInterface $view
+     */
+    public function initializeView(\TYPO3\Flow\Mvc\View\ViewInterface $view)
+    {
+        $this->view->assign('user', $this->authenticationManager->getSecurityContext()->getAccount()->getAccountIdentifier());
     }
 
     /**
@@ -64,25 +76,37 @@ class AppointmentController extends ActionController
     {
     }
 
+    /**
+     * Initializes the controller before invoking createAction.
+     */
     public function initializeCreateAction()
     {
         $temp = $this->request->getArgument('newAppointment');
         $temp['starttime'] = date('Y-m-d\TH:i:sP', strtotime($temp['starttime']));
         $temp['endtime'] = date('Y-m-d\TH:i:sP', strtotime($temp['endtime']));
-        $temp['displayStarttime'] = date('Y-m-d\TH:i:sP', strtotime($temp['displayStarttime']));
-        $temp['displayEndtime'] = date('Y-m-d\TH:i:sP', strtotime($temp['displayEndtime']));
         $this->request->setArgument('newAppointment', $temp);
     }
 
     /**
      * @param \Ecom\Terminal\Domain\Model\Appointment $newAppointment
+     * @param array                                   $participants
      * @return void
      */
-    public function createAction(Appointment $newAppointment)
+    public function createAction(Appointment $newAppointment, array $participants = [])
     {
+        $this->persistenceManager->whitelistObject($newAppointment);
         $this->appointmentRepository->add($newAppointment);
+        if (sizeof($participants)) {
+            foreach ($participants as $participant) {
+                $newParticipant = new Participant($participant, $newAppointment);
+                $this->persistenceManager->whitelistObject($newParticipant);
+                $this->participantRepository->add($newParticipant);
+            }
+        }
+        if ($this->persistenceManager->hasUnpersistedChanges())
+            $this->persistenceManager->persistAll();
         $this->addFlashMessage('Created a new appointment.');
-        $this->redirect('index', 'Standard');
+        $this->redirect('index');
     }
 
     /**
@@ -92,6 +116,17 @@ class AppointmentController extends ActionController
     public function editAction(Appointment $appointment)
     {
         $this->view->assign('appointment', $appointment);
+    }
+
+    /**
+     * Initializes the controller before invoking updateAction.
+     */
+    public function initializeUpdateAction()
+    {
+        $temp = $this->request->getArgument('appointment');
+        $temp['starttime'] = date('Y-m-d\TH:i:sP', strtotime($temp['starttime']));
+        $temp['endtime'] = date('Y-m-d\TH:i:sP', strtotime($temp['endtime']));
+        $this->request->setArgument('appointment', $temp);
     }
 
     /**
@@ -106,14 +141,27 @@ class AppointmentController extends ActionController
     }
 
     /**
-     * @param \Ecom\Terminal\Domain\Model\Appointment $appointment
      * @return void
      */
-    public function deleteAction(Appointment $appointment)
+    public function cleanupAction()
     {
-        $this->appointmentRepository->remove($appointment);
-        $this->addFlashMessage('Deleted a appointment.');
-        $this->redirect('index', 'Standard');
+        if ($appointments = $this->appointmentRepository->findInActive()) {
+            /** @var Appointment $appointment */
+            foreach ($appointments as $appointment) {
+                if ($appointment->hasParticipants()) {
+                    /** @var Participant $participant */
+                    foreach ($appointment->getParticipants() as $participant) {
+                        $this->participantRepository->remove($participant);
+                        $appointment->removeParticipant($participant);
+                    }
+                }
+                $this->appointmentRepository->remove($appointment);
+            }
+            $this->addFlashMessage('Deleted outdated appointments');
+        } else {
+            $this->addFlashMessage('Nothing to do');
+        }
+        $this->redirect('index');
     }
 
 }

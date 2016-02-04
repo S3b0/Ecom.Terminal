@@ -4,18 +4,46 @@
 
 -
   name: 'Admin Area'
-  uriPattern: 'manage'
+  uriPattern: 'admin'
   defaults:
     '@package':    'Ecom.Terminal'
-    '@controller': 'Standard'
+    '@controller': 'Appointment'
     '@action':     'index'
     '@format':     'html'
 
 -
-  name: 'Appointments object'
-  uriPattern: '{@controller}/{appointment}/{@action}'
+  name: 'Login'
+  uriPattern: 'login'
   defaults:
-    '@package': 'Ecom.Terminal'
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Authentication'
+    '@action':     'login'
+    '@format':     'html'
+
+-
+  name: 'Auth'
+  uriPattern: 'authorize'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Authentication'
+    '@action':     'authenticate'
+    '@format':     'html'
+
+-
+  name: 'Registration'
+  uriPattern: 'register'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Authentication'
+    '@action':     'register'
+    '@format':     'html'
+
+-
+  name: 'Appointments object'
+  uriPattern: 'admin/({appointment}/){@action}'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Appointment'
   appendExceedingArguments: true
   routeParts:
       appointment:
@@ -37,6 +65,6 @@
   uriPattern: ''
   defaults:
     '@package':    'Ecom.Terminal'
-    '@controller': 'Appointment'
+    '@controller': 'Standard'
     '@action':     'index'
     '@format':     'html'

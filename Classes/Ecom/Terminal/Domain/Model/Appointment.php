@@ -25,16 +25,6 @@ class Appointment
     protected $endtime;
 
     /**
-     * @var \DateTime
-     */
-    protected $displayStarttime;
-
-    /**
-     * @var \DateTime
-     */
-    protected $displayEndtime;
-
-    /**
      * @Flow\Validate(type="NotEmpty")
      * @Flow\Validate(type="StringLength", options={ "minimum"=3, "maximum"=80 })
      * @ORM\Column(length=80)
@@ -43,12 +33,14 @@ class Appointment
     protected $name;
 
     /**
-     * @var string
+     * @ORM\OneToOne(cascade={"persist"})
+     * @ORM\Column(nullable=true)
+     * @var \TYPO3\Flow\Resource\Resource
      */
     protected $image;
 
     /**
-     * @ORM\OneToMany(mappedBy="appointment", orphanRemoval=true)
+     * @ORM\OneToMany(mappedBy="appointment",cascade={"persist"},orphanRemoval=true)
      * @var \Doctrine\Common\Collections\Collection<Participant>
      */
     protected $participants;
@@ -60,6 +52,14 @@ class Appointment
     {
         $now = new \DateTime();
         $this->setStarttime($now);
+    }
+
+    /**
+     * @return string
+     */
+    public function _getIdentifier()
+    {
+        return $this->Persistence_Object_Identifier;
     }
 
     /**
@@ -99,42 +99,6 @@ class Appointment
     }
 
     /**
-     * @return \DateTime
-     */
-    public function getDisplayStarttime()
-    {
-        return $this->displayStarttime;
-    }
-
-    /**
-     * @param \DateTime $displayStarttime
-     * @return Appointment
-     */
-    public function setDisplayStarttime($displayStarttime)
-    {
-        $this->displayStarttime = $displayStarttime;
-        return $this;
-    }
-
-    /**
-     * @return \DateTime
-     */
-    public function getDisplayEndtime()
-    {
-        return $this->displayEndtime;
-    }
-
-    /**
-     * @param \DateTime $displayEndtime
-     * @return Appointment
-     */
-    public function setDisplayEndtime($displayEndtime)
-    {
-        $this->displayEndtime = $displayEndtime;
-        return $this;
-    }
-
-    /**
      * @return string
      */
     public function getName()
@@ -153,7 +117,7 @@ class Appointment
     }
 
     /**
-     * @return string
+     * @return \TYPO3\Flow\Resource\Resource|null
      */
     public function getImage()
     {
@@ -161,10 +125,10 @@ class Appointment
     }
 
     /**
-     * @param string $image
+     * @param \TYPO3\Flow\Resource\Resource $image
      * @return Appointment
      */
-    public function setImage($image)
+    public function setImage(\TYPO3\Flow\Resource\Resource $image = null)
     {
         $this->image = $image;
         return $this;
@@ -204,6 +168,22 @@ class Appointment
     public function removeParticipant(Participant $participant)
     {
         $this->participants->removeElement($participant);
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasParticipants()
+    {
+        return $this->participants instanceof \Doctrine\Common\Collections\Collection && $this->participants->count();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOverdue()
+    {
+        return $this->endtime <= new \DateTime();
     }
 
 }

@@ -1,0 +1,42 @@
+<f:layout name="Default" />
+
+<f:section name="Title">ecom Terminal - Login</f:section>
+
+<f:section name="Styles"></f:section>
+<f:section name="HeaderJS"></f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <f:render partial="FlashMessages" />
+        <div class="row"><h1>Terminal - Registration</h1></div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <f:form action="create" method="post">
+                <div class="form-group">
+                    <label for="username">User:</label>
+                    <f:form.textfield name="identifier"
+                                      class="form-control"
+                                      id="username"
+                                      value="{identifier}"
+                                      additionalAttributes="{autofocus: 1}" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Pass:</label>
+                    <f:form.password name="password"
+                                     class="form-control"
+                                     id="password" />
+                </div>
+                <div class="form-group">
+                    <label for="password-check">Pass repeat:</label>
+                    <f:form.password name="passwordCheck"
+                                     class="form-control"
+                                     id="password-check" />
+                </div>
+
+                <f:form.hidden name="role" value="0" />
+                <div class="clearfix">&nbsp;</div>
+                <f:form.button type="submit" class="form-control btn btn-info"><i class="fa fa-user-plus fa-fw"></i> Register</f:form.button>
+            </f:form>
+        </div>
+    </div>
+</f:section>

@@ -16,7 +16,7 @@ class AppointmentRepository extends Repository
 {
 
     protected $defaultOrderings = [
-        'displayStarttime' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
+        'starttime' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
     ];
 
     /**
@@ -27,10 +27,22 @@ class AppointmentRepository extends Repository
         $query = $this->createQuery();
 
         return $query->matching(
-            $query->greaterThan('displayEndtime', new \DateTime())
+            $query->greaterThan('endtime', new \DateTime())
         )->setOrderings([
-            'displayStarttime' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
+            'starttime' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
         ])->execute();
+    }
+
+    /**
+     * @return QueryResultInterface
+     */
+    public function findInactive()
+    {
+        $query = $this->createQuery();
+
+        return $query->matching(
+            $query->lessThanOrEqual('endtime', new \DateTime())
+        )->execute();
     }
 
 }

@@ -1,0 +1,10 @@
+roles:
+  'Ecom.Terminal:Administrator':
+    privileges: []
+
+  'Ecom.Terminal:User':
+    privileges: []
+
+  'Ecom.Terminal:PrivilegedUser':
+    parentRoles: ['Ecom.Terminal:User']
+    privileges: []

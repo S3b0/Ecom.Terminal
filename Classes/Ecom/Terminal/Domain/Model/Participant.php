@@ -32,6 +32,18 @@ class Participant
      */
     protected $appointment;
 
+    /**
+     * Participant constructor.
+     *
+     * @param array       $data
+     * @param Appointment $appointment
+     */
+    public function __construct(array $data, Appointment $appointment)
+    {
+        $this->salutation = $data['salutation'];
+        $this->name = $data['name'];
+        $this->appointment = $appointment;
+    }
 
     /**
      * @return integer

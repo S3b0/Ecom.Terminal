@@ -1,14 +1,12 @@
 <f:form.validationResults for="{for}">
 	<f:if condition="{validationResults.flattenedErrors}">
-		<dl class="errors">
+		<div class="row flashmessages">
 			<f:for each="{validationResults.flattenedErrors}" key="propertyName" as="errors">
-				<dt>
-					{propertyName}:
-				</dt>
-				<dd>
-					<f:for each="{errors}" as="error">{error}</f:for>
-				</dd>
+				<div class="alert alert-danger alert-dismissible" role="alert">
+					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<strong>{propertyName}</strong> <f:for each="{errors}" as="error">{error}</f:for>
+				</div>
 			</f:for>
-		</dl>
+		</div>
 	</f:if>
 </f:form.validationResults>

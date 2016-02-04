@@ -1,25 +1,72 @@
 <f:layout name="Default" />
 
-<f:section name="Title">A list of appointments</f:section>
+<f:section name="Title">Admin Area</f:section>
+
+<f:section name="Styles"></f:section>
+<f:section name="HeaderJS"></f:section>
 
 <f:section name="Content">
-    <f:if condition="{appointments}">
-        <f:then>
-            <ul>
-                <f:for each="{appointments}" as="appointment">
-                    <li>
-                        <f:link.action action="show" arguments="{appointment: appointment}">{appointment.name}</f:link.action>
-                        <f:link.action action="edit" arguments="{appointment: appointment}">Edit</f:link.action>
-                        <f:form action="delete" arguments="{appointment: appointment}">
-                            <f:form.submit value="Delete" />
-                        </f:form>
-                    </li>
-                </f:for>
-            </ul>
-        </f:then>
-        <f:else>
-            <p>No appointments created yet.</p>
-        </f:else>
-    </f:if>
-    <p><f:link.action action="new">Create a new appointment</f:link.action></p>
+    <div class="container">
+        <f:render partial="FlashMessages" />
+        <div class="row">
+            <h1>Manage appointments</h1>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <f:if condition="{appointments -> f:count()}">
+                <f:then>
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th><f:translate id="name" /></th>
+                            <th><f:translate id="adm.starttime" /></th>
+                            <th><f:translate id="adm.endtime" /></th>
+                            <th><f:translate id="participants" /></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <f:for each="{appointments}" as="appointment">
+                            <tr class="{f:if(condition: appointment.overdue, then: 'danger')}">
+                                <td>{appointment.name}</td>
+                                <td><i class="fa fa-calendar{f:if(condition: appointment.overdue, then: '-times')}-o fa-fw text-success"></i> {appointment.starttime -> f:format.date(format: 'D, d M, Y')}</td>
+                                <td><i class="fa fa-calendar{f:if(condition: appointment.overdue, then: '-times')}-o fa-fw text-danger"></i> {appointment.endtime -> f:format.date(format: 'D, d M, Y')}</td>
+                                <td>
+                                    <f:for each="{appointment.participants}" as="participant" iteration="iterator">
+                                        <f:translate id="gender{participant.salutation}" /> {participant.name}<f:if condition="{iterator.isLast} == 0">,</f:if>
+                                    </f:for>
+                                </td>
+                                <td>
+                                    <f:if condition="{appointment.image}">
+                                        <a href="{f:uri.resource(resource: appointment.image)}" target="_blank" title="View image"><i class="fa fa-picture-o fa-fw"></i></a>
+                                    </f:if>
+                                </td>
+                                <td>
+                                    <f:link.action action="show" controller="Appointment" arguments="{appointment: appointment}" title="show"><i class="fa fa-eye fa-fw text-default"></i></f:link.action>
+                                    <f:security.ifHasRole role="Administrator">
+                                        <f:link.action action="edit" controller="Appointment" arguments="{appointment: appointment}" title="edit"><i class="fa fa-pencil fa-fw text-default"></i></f:link.action>
+                                    </f:security.ifHasRole>
+                                </td>
+                            </tr>
+                        </f:for>
+                        </tbody>
+                    </table>
+                </f:then>
+                <f:else>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        No appointments created yet.
+                    </div>
+                </f:else>
+            </f:if>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <p>
+                <f:link.action action="new" controller="Appointment" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> New Appointment</f:link.action>
+                <f:link.action action="cleanup" controller="Appointment" class="btn btn-danger" title="clean" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Clean DB</f:link.action>
+            </p>
+        </div>
+    </div>
 </f:section>

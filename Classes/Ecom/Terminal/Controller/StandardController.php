@@ -21,13 +21,7 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     public function indexAction()
     {
-        $server = explode('.', $_SERVER['SERVER_ADDR']);
-        array_pop($server);
-        if (sizeof((array) $server) && !preg_match('/^' . implode('\.', $server) . '/i', $_SERVER['REMOTE_ADDR'])) {
-            die('Access denied');
-        }
-
-        $this->view->assign('appointments', $this->appointmentRepository->findAll());
+        $this->view->assign('appointments', $this->appointmentRepository->findActive());
     }
 
 }

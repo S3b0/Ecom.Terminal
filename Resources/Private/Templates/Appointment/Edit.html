@@ -1,18 +1,135 @@
 <f:layout name="Default" />
 
-<f:section name="Title">Edit appointment "{appointment.name}"</f:section>
+<f:section name="Title">Edit appointment {appointment.name}</f:section>
+
+<f:section name="Styles">
+    <!-- dateTime Picker CSS -->
+    <link rel="stylesheet" href="{f:uri.resource(path: 'CSS/jquery.datetimepicker.css')}">
+</f:section>
+
+<f:section name="HeaderJS">
+    <!-- dateTime Picker JS -->
+    <script src="{f:uri.resource(path: 'JavaScript/jquery.datetimepicker.full.min.js')}"></script>
+</f:section>
 
 <f:section name="Content">
-    <f:form action="update" object="{appointment}" objectName="appointment">
-        <ol>
-            <li>
-                <label for="name">Name</label>
-                <f:form.textfield property="name" id="name" />
-            </li>
-        
-            <li>
-                <f:form.submit value="Update" />
-            </li>
-        </ol>
-    </f:form>
+    <div class="container">
+        <f:render partial="FormErrors" arguments="{for: 'newAppointment'}" />
+        <div class="row">
+            <h1>Edit appointment "{appointment.name}"</h1>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <f:form action="update" objectName="appointment" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Title of appointment</label>
+                    <f:form.textfield property="name" class="form-control" id="name" placeholder="Enter some title" value="{appointment.name}" />
+                </div>
+                <div class="row">
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label for="starttime">Appointment goes from</label>
+                            <div class='input-group date' id='js-trigger-starttime'>
+                                <f:form.textfield property="starttime" class="form-control" id="starttime" placeholder="Enter start time" value="{appointment.starttime -> f:format.date(format: 'Y-m-d h:i')}" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='col-md-6'>
+                        <div class="form-group">
+                            <label for="endtime">to</label>
+                            <div class='input-group date' id='js-trigger-endtime'>
+                                <f:form.textfield property="endtime" class="form-control" id="endtime" placeholder="Enter end time" value="{appointment.endtime -> f:format.date(format: 'Y-m-d h:i')}" />
+                                <span class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <f:form.upload property="image" id="image" />
+                    <p class="help-block">Upload an image used for fullscreen background.</p>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <fieldset id="participants">
+                    <legend><i class="fa fa-users fa-fw"></i> Participants</legend>
+                    <div id="new-participant">
+                        <div id="js-delete-participant-0" style="color:#f00;cursor:pointer;float:right" title="Remove participant"><i class="fa fa-user-times fa-fw"></i></div>
+                        <div class="form-group">
+                            <label for="participantSalutation">Salutation</label>
+                            <f:form.select options="{0: 'Mr.', 1: 'Ms.', 2: 'Mrs'}"
+                                           prependOptionLabel="Salutation"
+                                           prependOptionValue=""
+                                           name="participants[0][salutation]"
+                                           class="form-control"
+                                           id="participantSalutation" />
+                        </div>
+                        <div class="form-group">
+                            <label for="participantName">Name</label>
+                            <f:form.textfield name="participants[0][name]" class="form-control" id="participantName" placeholder="Enter participants name" />
+                        </div>
+                    </div>
+                </fieldset>
+                <div class="btn btn-info form-control" id="js-add-participant"><i class="fa fa-user-plus fa-fw"></i> Add Participant</div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="form-group">
+                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-floppy-o fa-fw"></i> <f:translate id="submit.saveAppointment" /></f:form.button> &nbsp;
+                    <f:link.action action="index" class="btn btn-danger">Cancel</f:link.action>
+                </div>
+                <f:form.hidden property="image" />
+            </f:form>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+    </div>
+
+    <script>
+        $(function() {
+            var jsTriggerST = $('#js-trigger-starttime'),
+                jsTriggerET = $('#js-trigger-endtime'),
+                dpOptions = {
+                    allowInputToggle: true,
+                    daysOfWeekDisabled: [0, 6],
+                    format: 'YYYY-MM-DD HH:mm',
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-arrow-up",
+                        down: "fa fa-arrow-down"
+                    },
+                    locale: 'de',
+                    showClear: true,
+                    showClose: true,
+                    showTodayButton: true,
+                    sideBySide: true,
+                    stepping: 15
+                };
+            jsTriggerST.datetimepicker(dpOptions);
+            jsTriggerET.datetimepicker(dpOptions);
+            jsTriggerST.on("dp.change", function (e) {
+                var newDate = new Date(e.date);
+                jsTriggerET.data("DateTimePicker").minDate(new Date(newDate.getTime() + 1800));
+            });
+
+            var counter = 1,
+                pattern = $('#new-participant').html();
+            $('#js-add-participant').on('click', function() {
+                var regex   = new RegExp('participants\\\[' + (counter - 1) + '\\\]', 'igm'),
+                    replace = 'participants[' + counter + ']';
+                pattern = pattern.replace(regex, replace);
+                pattern = pattern.replace('js-delete-participant-' + (counter - 1), 'js-delete-participant-' + counter);
+                $('#participants').append('<div id="participant-' + counter + '">' + pattern + '</div>');
+                $('#js-delete-participant-' + counter).on('click', function() {
+                    $(this).parent().remove();
+                });
+                counter++;
+            });
+            $('#js-delete-participant-0').on('click', function() {
+                $(this).parent().remove();
+            });
+        });
+    </script>
 </f:section>

@@ -1,13 +1,40 @@
 <f:layout name="Default" />
 
-<f:section name="Title">Show appointment"{appointment.name}"</f:section>
+<f:section name="Title">Details - {appointment.name}</f:section>
+
+<f:section name="Styles"></f:section>
+<f:section name="HeaderJS"></f:section>
 
 <f:section name="Content">
-    <table>
-        <tr>
-            <th>Name</th>
-            <td>{appointment.name}</td>
-        </tr>
-    </table>
-    <f:link.action action="index">Back</f:link.action>
+    <div class="container">
+        <div class="row">
+            <h1>{appointment.name}</h1>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <table class="table table-striped table-hover">
+            <tr>
+                <td><i class="fa fa fa-clock-o fa-fw text-success"></i> Starttime</td>
+                <td>{appointment.starttime -> f:format.date(format: 'l, F jS Y h:i A')}</td>
+            </tr>
+            <tr>
+                <td><i class="fa fa fa-clock-o fa-fw text-danger"></i> Endtime</td>
+                <td>{appointment.endtime -> f:format.date(format: 'l, F jS Y h:i A')}</td>
+            </tr>
+            <tr>
+                <td><i class="fa fa-picture-o fa-fw"></i> Image</td>
+                <td>
+                    <f:if condition="{appointment.image}">
+                        <a href="{f:uri.resource(resource: appointment.image)}" target="_blank" title="Show original size">
+                            <img src="{f:uri.resource(resource: appointment.image)}" width="400" />
+                        </a>
+                    </f:if>
+                </td>
+            </tr>
+            <tr>
+                <td><i class="fa fa-users fa-fw"></i> Participants</td>
+                <td></td>
+            </tr>
+        </table>
+        <f:link.action action="index" class="btn btn-default">Back</f:link.action>
+    </div>
 </f:section>
