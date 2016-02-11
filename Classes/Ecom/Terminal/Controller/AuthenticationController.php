@@ -6,7 +6,7 @@ namespace Ecom\Terminal\Controller;
  */
 
 use TYPO3\Flow\Annotations as Flow;
-use TYPO3\Flow\Error\Message;
+use TYPO3\Flow\Error\Message as Msg;
 use TYPO3\Flow\Mvc\ActionRequest;
 use TYPO3\Flow\Security\Authentication\Controller\AbstractAuthenticationController;
 
@@ -42,12 +42,12 @@ class AuthenticationController extends AbstractAuthenticationController
         if ($originalRequest !== null) {
             $this->redirectToRequest($originalRequest);
         }
-        $this->redirect('index', 'Appointment');
+        $this->redirect('index', 'Administration');
     }
 
     protected function onAuthenticationFailure(\TYPO3\Flow\Security\Exception\AuthenticationRequiredException $exception = null)
     {
-        $this->addFlashMessage($exception->getMessage(), 'Authentication failed!', Message::SEVERITY_ERROR, [], $exception->getCode());
+        $this->addFlashMessage($exception->getMessage(), 'Authentication failed!', Msg::SEVERITY_ERROR, [], $exception->getCode());
     }
 
     /**
@@ -85,15 +85,15 @@ class AuthenticationController extends AbstractAuthenticationController
     public function createAction($identifier, $password, $passwordCheck, $role = 0)
     {
         if ($identifier === '' || strlen($identifier) < self::MIN_USERNAME_LENGTH) {
-            $this->addFlashMessage('Username must be at least ' . self::MIN_USERNAME_LENGTH . ' characters long.', 'Username too short', Message::SEVERITY_WARNING);
+            $this->addFlashMessage('Username must be at least ' . self::MIN_USERNAME_LENGTH . ' characters long.', 'Username too short', Msg::SEVERITY_WARNING);
         } elseif (!preg_match('/^[a-z][a-z0-9-_]+$/i', $identifier)) {
-            $this->addFlashMessage('Username must contain alphanumeric characters, hyphens and underscores only.', 'Invalid characters found in username', Message::SEVERITY_WARNING);
+            $this->addFlashMessage('Username must contain alphanumeric characters, hyphens and underscores only.', 'Invalid characters found in username', Msg::SEVERITY_WARNING);
         } elseif ($this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($identifier, 'DefaultProvider') instanceof \TYPO3\Flow\Security\Account) {
-            $this->addFlashMessage('Please choose another username.', 'User already exists', Message::SEVERITY_WARNING);
+            $this->addFlashMessage('Please choose another username.', 'User already exists', Msg::SEVERITY_WARNING);
         } elseif ($errorMessage = $this->checkPassword($identifier, $password)) {
-            $this->addFlashMessage($errorMessage, 'Password validation failed', Message::SEVERITY_WARNING);
+            $this->addFlashMessage($errorMessage, 'Password validation failed', Msg::SEVERITY_WARNING);
         } elseif ($password !== $passwordCheck) {
-            $this->addFlashMessage('Passwords do not match', 'Wrong password confirmation', Message::SEVERITY_WARNING);
+            $this->addFlashMessage('Passwords do not match', 'Wrong password confirmation', Msg::SEVERITY_WARNING);
         } else {
             switch ($role) {
                 case 1:

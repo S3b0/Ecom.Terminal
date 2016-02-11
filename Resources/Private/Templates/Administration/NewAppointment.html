@@ -1,36 +1,44 @@
 <f:layout name="Default" />
 
-<f:section name="Title">Edit appointment {appointment.name}</f:section>
+<f:section name="Title">New appointment</f:section>
 
 <f:section name="Styles">
-    <!-- dateTime Picker CSS -->
-    <link rel="stylesheet" href="{f:uri.resource(path: 'CSS/jquery.datetimepicker.css')}">
+    <f:comment>
+        <!-- dateTime Picker CSS -->
+        <!--<link rel="stylesheet" href="{f:uri.resource(path: 'Styles/jquery.datetimepicker.css')}">-->
+    </f:comment>
+    <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}" />
 </f:section>
 
 <f:section name="HeaderJS">
-    <!-- dateTime Picker JS -->
-    <script src="{f:uri.resource(path: 'JavaScript/jquery.datetimepicker.full.min.js')}"></script>
+    <f:comment>
+        <!-- dateTime Picker JS @see http://xdsoft.net/jqplugins/datetimepicker/ -->
+        <!--<script src="{f:uri.resource(path: 'Scripts/jquery.datetimepicker.full.min.js')}"></script>-->
+    </f:comment>
+    <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/moment/min/moment.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/moment/min/locales.min.js')}"></script>
+    <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}"></script>
 </f:section>
 
 <f:section name="Content">
     <div class="container">
         <f:render partial="FormErrors" arguments="{for: 'newAppointment'}" />
         <div class="row">
-            <h1>Edit appointment "{appointment.name}"</h1>
+            <h1>New appointment</h1>
         </div>
         <div class="clearfix">&nbsp;</div>
         <div class="row">
-            <f:form action="update" objectName="appointment" enctype="multipart/form-data">
+            <f:form action="createAppointment" objectName="newAppointment" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name">Title of appointment</label>
-                    <f:form.textfield property="name" class="form-control" id="name" placeholder="Enter some title" value="{appointment.name}" />
+                    <f:form.textfield property="name" class="form-control" id="name" placeholder="Enter some title" />
                 </div>
                 <div class="row">
                     <div class='col-md-6'>
                         <div class="form-group">
                             <label for="starttime">Appointment goes from</label>
                             <div class='input-group date' id='js-trigger-starttime'>
-                                <f:form.textfield property="starttime" class="form-control" id="starttime" placeholder="Enter start time" value="{appointment.starttime -> f:format.date(format: 'Y-m-d h:i')}" />
+                                <f:form.textfield property="starttime" class="form-control" id="starttime" placeholder="Enter start time" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -41,7 +49,7 @@
                         <div class="form-group">
                             <label for="endtime">to</label>
                             <div class='input-group date' id='js-trigger-endtime'>
-                                <f:form.textfield property="endtime" class="form-control" id="endtime" placeholder="Enter end time" value="{appointment.endtime -> f:format.date(format: 'Y-m-d h:i')}" />
+                                <f:form.textfield property="endtime" class="form-control" id="endtime" placeholder="Enter end time" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
@@ -51,7 +59,7 @@
                 </div>
                 <div class="form-group">
                     <label for="image">Image</label>
-                    <f:form.upload property="image" id="image" />
+                    <f:form.upload property="image" id="image" additionalAttributes="{accept: 'image/gif, image/jpeg, image/png'}" />
                     <p class="help-block">Upload an image used for fullscreen background.</p>
                 </div>
                 <div class="clearfix">&nbsp;</div>
@@ -77,7 +85,7 @@
                 <div class="btn btn-info form-control" id="js-add-participant"><i class="fa fa-user-plus fa-fw"></i> Add Participant</div>
                 <div class="clearfix">&nbsp;</div>
                 <div class="form-group">
-                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-floppy-o fa-fw"></i> <f:translate id="submit.saveAppointment" /></f:form.button> &nbsp;
+                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-floppy-o fa-fw"></i> <f:translate id="submit.newAppointment" /></f:form.button> &nbsp;
                     <f:link.action action="index" class="btn btn-danger">Cancel</f:link.action>
                 </div>
                 <f:form.hidden property="image" />
@@ -110,8 +118,18 @@
             jsTriggerST.datetimepicker(dpOptions);
             jsTriggerET.datetimepicker(dpOptions);
             jsTriggerST.on("dp.change", function (e) {
-                var newDate = new Date(e.date);
-                jsTriggerET.data("DateTimePicker").minDate(new Date(newDate.getTime() + 1800));
+                var minDate = new Date(e.date),
+                    setDate = new Date(e.date);
+                setDate.setHours(setDate.getHours() + 8);
+                var tokens = {
+                        year: setDate.getFullYear(),
+                        month: (setDate.getMonth() < 9 ? '0' : '') + (setDate.getMonth() + 1),
+                        date: (setDate.getDate() < 10 ? '0' : '') + (setDate.getDate()),
+                        hours: (setDate.getHours() < 10 ? '0' : '') + (setDate.getHours()),
+                        minutes: (setDate.getMinutes() < 10 ? '0' : '') + (setDate.getMinutes())
+                    };
+                jsTriggerET.data("DateTimePicker").minDate(minDate);
+                $('#endtime').val(tokens.year + '-' + tokens.month + '-' + tokens.date + ' ' + tokens.hours + ':' + tokens.minutes);
             });
 
             var counter = 1,

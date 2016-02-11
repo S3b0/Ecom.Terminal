@@ -32,7 +32,16 @@
             </tr>
             <tr>
                 <td><i class="fa fa-users fa-fw"></i> Participants</td>
-                <td></td>
+                <td>
+                    <f:if condition="{appointment.participants -> f:count()}">
+                        <f:then>
+                            <f:for each="{appointment.participants}" as="participant">
+                                <f:translate id="gender{participant.salutation}" /> {participant.name}<br />
+                            </f:for>
+                        </f:then>
+                        <f:else>-</f:else>
+                    </f:if>
+                </td>
             </tr>
         </table>
         <f:link.action action="index" class="btn btn-default">Back</f:link.action>

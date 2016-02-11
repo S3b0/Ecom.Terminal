@@ -7,7 +7,7 @@
   uriPattern: 'admin'
   defaults:
     '@package':    'Ecom.Terminal'
-    '@controller': 'Appointment'
+    '@controller': 'Administration'
     '@action':     'index'
     '@format':     'html'
 
@@ -40,15 +40,51 @@
 
 -
   name: 'Appointments object'
+  uriPattern: 'admin/new'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Administration'
+    '@action':     'newAppointment'
+    '@format':     'html'
+
+-
+  name: 'Appointments object'
+  uriPattern: 'admin/clean'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Administration'
+    '@action':     'cleanup'
+    '@format':     'html'
+
+-
+  name: 'Add slides'
+  uriPattern: 'admin/slides/add'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Administration'
+    '@action':     'uploadSlides'
+    '@format':     'html'
+
+-
+  name: 'Remove slide'
+  uriPattern: 'admin/slide/({slide}/)remove'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Administration'
+    '@action':     'removeSlide'
+    '@format':     'html'
+
+-
+  name: 'Appointments object'
   uriPattern: 'admin/({appointment}/){@action}'
   defaults:
     '@package':    'Ecom.Terminal'
-    '@controller': 'Appointment'
+    '@controller': 'Administration'
   appendExceedingArguments: true
   routeParts:
-      appointment:
-        objectType: 'Ecom\Terminal\Domain\Model\Appointment'
-        uriPattern: '{name}'
+    appointment:
+      objectType: 'Ecom\Terminal\Domain\Model\Appointment'
+      uriPattern: '{name}'
 
 -
   name: 'default'
@@ -61,7 +97,7 @@
 # Fallback route
 
 -
-  name: 'fallback'
+  name: 'Terminal Root'
   uriPattern: ''
   defaults:
     '@package':    'Ecom.Terminal'

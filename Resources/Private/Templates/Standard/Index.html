@@ -2,13 +2,20 @@
 
 <f:section name="Title">ecom Terminal</f:section>
 
-<f:section name="Styles"></f:section>
+<f:section name="Styles">
+    <link href="{f:uri.resource(path: 'Styles/jquery.maximage.min.css')}" rel="stylesheet" />
+</f:section>
 
-<f:section name="HeaderJS"></f:section>
+<f:section name="HeaderJS">
+    <script src="{f:uri.resource(path: 'bower_components/jquery-fullsizable/js/jquery-fullsizable.min.js')}"></script>
+</f:section>
 
 <f:section name="Content">
-    <div class="row" style="background-color: #00dd1c;padding: 15px 50px">
-        sdgflkhs
-    </div>
-    <script>setTimeout(window.location.reload.bind(window.location), 900000);</script>
+    <f:if condition="{slides}">
+        <iframe src="{f:uri.action(action: 'slideShow')}" id="fullscreen" />
+    </f:if>
+
+    <script>
+        setTimeout(window.location.reload.bind(window.location), 900000);
+    </script>
 </f:section>

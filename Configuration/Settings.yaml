@@ -6,3 +6,24 @@ TYPO3:
         providers:
           DefaultProvider:
             provider: 'PersistedUsernamePasswordProvider'
+    resource:
+      storages:
+        ecomTerminalSlidesResourcesStorage:
+          storage: 'TYPO3\Flow\Resource\Storage\WritableFileSystemStorage'
+          storageOptions:
+            path: '%FLOW_PATH_DATA%Ecom.Terminal/Resources/'
+      targets:
+        ecomTerminalSlidesResourcesTarget:
+          target: 'TYPO3\Flow\Resource\Target\FileSystemSymlinkTarget'
+          targetOptions:
+            path: '%FLOW_PATH_WEB%_Resources/Ecom.Terminal/'
+            baseUri: '_Resources/Ecom.Terminal/'
+      collections:
+        ecom.terminal:
+          storage: 'ecomTerminalSlidesResourcesStorage'
+          target: 'ecomTerminalSlidesResourcesTarget'
+
+Ecom:
+  Terminal:
+    slides:
+      collection: 'ecom.terminal'

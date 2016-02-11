@@ -43,9 +43,9 @@
                                     </f:if>
                                 </td>
                                 <td>
-                                    <f:link.action action="show" controller="Appointment" arguments="{appointment: appointment}" title="show"><i class="fa fa-eye fa-fw text-default"></i></f:link.action>
+                                    <f:link.action action="showAppointment" controller="Administration" arguments="{appointment: appointment}" title="show"><i class="fa fa-eye fa-fw text-default"></i></f:link.action>
                                     <f:security.ifHasRole role="Administrator">
-                                        <f:link.action action="edit" controller="Appointment" arguments="{appointment: appointment}" title="edit"><i class="fa fa-pencil fa-fw text-default"></i></f:link.action>
+                                        <f:link.action action="editAppointment" controller="Administration" arguments="{appointment: appointment}" title="Edit appointment"><i class="fa fa-pencil fa-fw text-default"></i></f:link.action>
                                     </f:security.ifHasRole>
                                 </td>
                             </tr>
@@ -64,9 +64,37 @@
         <div class="clearfix">&nbsp;</div>
         <div class="row">
             <p>
-                <f:link.action action="new" controller="Appointment" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> New Appointment</f:link.action>
-                <f:link.action action="cleanup" controller="Appointment" class="btn btn-danger" title="clean" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Clean DB</f:link.action>
+                <f:link.action action="newAppointment" controller="Administration" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> New Appointment</f:link.action>
+                <f:link.action action="cleanup" controller="Administration" class="btn btn-danger" title="clean" onclick="return confirm('Are you sure?')"><i class="fa fa-trash"></i> Clean DB</f:link.action>
             </p>
+            <hr />
+            <h3>Slides</h3>
+            <f:if condition="{slides -> f:count()}">
+                <f:then>
+                    <f:for each="{slides}" as="slide" iteration="iterator">
+                        <div class="slide-preview">
+                            <img src="{f:uri.resource(resource: slide)}" height="150" />
+                            <f:link.action action="removeSlide" arguments="{slide: slide.sha1}" class="alert alert-danger link" title="Remove Slide">
+                                <i class="fa fa-trash-o fa-fw text-danger"></i>
+                            </f:link.action>
+                        </div>
+                    </f:for>
+                </f:then>
+            </f:if>
+            <div class="clearfix"></div>
+            <hr />
+            <p><f:link.action action="uploadSlides" class="btn btn-default"><i class="fa fa-slideshare fa-fw"></i> Add Slides</f:link.action></p>
         </div>
     </div>
+
+    <script>
+        $(function() {
+            $('.slide-preview').on('mouseenter', function() {
+                $(this).children('.link').first().show();
+            });
+            $('.slide-preview').on('mouseleave', function() {
+                $(this).children('.link').first().hide();
+            });
+        });
+    </script>
 </f:section>

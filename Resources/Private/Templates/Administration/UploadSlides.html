@@ -1,0 +1,29 @@
+<f:layout name="Default" />
+
+<f:section name="Title">Upload Slides</f:section>
+
+<f:section name="Styles"></f:section>
+<f:section name="HeaderJS"></f:section>
+
+<f:section name="Content">
+    <div class="container">
+        <div class="row">
+            <h1>Upload Slides</h1>
+        </div>
+        <div class="clearfix">&nbsp;</div>
+        <div class="row">
+            <f:form action="processSlideUpload" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="slides">Image</label>
+                    <f:form.upload name="slides[]" id="slides" additionalAttributes="{accept: 'image/gif, image/jpeg, image/png', multiple: 'multiple'}" />
+                    <p class="help-block">Upload an image used for fullscreen background slider.</p>
+                </div>
+                <div class="clearfix">&nbsp;</div>
+                <div class="form-group">
+                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-upload fa-fw"></i> Upload</f:form.button> &nbsp;
+                    <f:link.action action="index" class="btn btn-danger">Cancel</f:link.action>
+                </div>
+            </f:form>
+        </div>
+    </div>
+</f:section>

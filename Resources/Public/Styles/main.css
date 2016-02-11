@@ -1,0 +1,106 @@
+.clearfix:after {
+	clear: both;
+	content: ".";
+	display: block;
+	height: 0;
+	visibility: hidden;
+}
+.clearfix {
+	display: inline-block;
+}
+.clearfix {
+	display: block;
+}
+
+html {
+	-webkit-tap-highlight-color:rgba(0,0,0,0)
+}
+body {
+	font-family: "Roboto Condensed", Roboto, Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	background-color: #fff;
+	margin: 0;
+	/* @todo activate when dev finished */
+	/*overflow: hidden;*/
+}
+
+iframe#fullscreen {
+	border: 0;
+	bottom: 0;
+	height: 100%;
+	left: 0;
+	position: fixed;
+	right: 0;
+	top: 0;
+	width: 100%;
+}
+
+#user-panel {
+	background-color: #231f20;
+	box-shadow: 0 0 15px #3c3c3c;
+	height: 54px;
+	margin-bottom: 1em;
+	padding: 10px;
+	width: 100%;
+}
+
+#user-panel.sticky {
+	position: fixed;
+	top: 0;
+}
+
+#user-panel-inner {
+	color: #fff;
+	margin: auto;
+	text-align: right;
+	/* container width! adopt to @media rules, see TWBS */
+	width: 1170px;
+}
+
+.flashmessages {
+	margin: 1em auto;
+}
+
+.slide-preview {
+	float: left;
+	margin: 0 1em 1em 0;
+	position: relative;
+}
+
+.slide-preview > .link {
+	border-left: 0;
+	border-radius: 0;
+	display: none;
+	height: 30px;
+	left: 0;
+	padding: 5px;
+	position: absolute;
+	text-align: center;
+	top: 0;
+	width: 100%;
+}
+
+.slide-preview > .link:hover {
+	background: rgb(255, 141, 144);
+}
+
+.slide-preview > .link:hover * {
+	color: #fff;
+}
+
+.drop-files-container {
+	border: 4px solid #ccc !important;
+	border-radius: 20px !important;
+	color: #ccc !important;
+	font-size: 20px !important;
+	font-weight: bold;
+	height: auto !important;
+	margin: 20px 0 40px;
+	padding: 20px !important;
+	text-align: center;
+}
+
+.drop-files-container:hover {
+	background-color: #f6f6f6;
+}
