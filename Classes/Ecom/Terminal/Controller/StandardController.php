@@ -23,34 +23,86 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
     protected $resourceManager;
 
     /**
-     * @return void
+     * @Flow\Inject
+     * @var \TYPO3\Flow\I18n\Translator
      */
-    public function indexAction()
+    protected $translator;
+
+    /**
+     * @var \TYPO3\Flow\I18n\Locale
+     */
+    protected $lang;
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\Flow\I18n\Service
+     */
+    protected $languageService;
+
+    /**
+     * Initializes the controller before invoking an action method.
+     */
+    public function initializeAction()
     {
-        $this->view->assignMultiple([
-            'appointments'  => $this->appointmentRepository->findActive(),
-            'hideUserPanel' => true,
-            'slides'        => sizeof($this->getSlideResources()) > 0
-        ]);
+        $detector = new \TYPO3\Flow\I18n\Detector();
+        $this->lang = $detector->detectLocaleFromHttpHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $this->settings['i18n']['defaultLocale'] = $this->lang->getLanguage();
+        $this->languageService->getConfiguration()->setCurrentLocale($this->lang);
     }
 
     /**
      * @return void
      */
-    public function slideShowAction()
+    public function indexAction()
     {
-        $vegasJsOptions = '[]';
+        if (sizeof($this->getSlideResources())) {
+            $this->assignSlides();
+        } else {
+            $this->view->assign('bodyStyle', " style=\"background: transparent url({$this->resourceManager->getPublicPackageResourceUri('Ecom.Terminal', 'Images/default.jpg')}) no-repeat center fixed\"");
+        }
+
+        /** @var \Ecom\Terminal\Domain\Model\Appointment $appointment */
+        if (($appointment = $this->appointmentRepository->findCurrentAppointment(new \DateTimeZone($this->settings[ 'date' ][ 'timezone' ]))) instanceof \Ecom\Terminal\Domain\Model\Appointment) {
+            /** @var \TYPO3\Flow\I18n\Locale $displayLanguage */
+            $displayLanguage = new \TYPO3\Flow\I18n\Locale($appointment->getDisplayLanguage());
+            if ($displayLanguage !== $this->lang) {
+                $this->languageService->getConfiguration()->setCurrentLocale($displayLanguage);
+            }
+            if ($appointment->getImage() instanceof \TYPO3\Flow\Resource\Resource) {
+                $this->view->assignMultiple([
+                    'bodyStyle'              => " style=\"background: transparent url({$this->resourceManager->getPublicPersistentResourceUri($appointment->getImage())}) no-repeat center fixed\"",
+                    'inlineStyleColor'       => " style=\"color: {$appointment->getFontColor()}\""
+                ]);
+            } else {
+                $this->view->assign('bodyStyle', " style=\"background: #000 url({$this->resourceManager->getPublicPackageResourceUri('Ecom.Terminal', 'Images/glow.jpg')}) no-repeat center fixed\"");
+            }
+            $this->view->assignMultiple([
+                'appointment' => $appointment,
+                'mode'        => 1
+            ]);
+        }
+    }
+
+    /**
+     * @return void
+     */
+    public function assignSlides()
+    {
+        $vegasSlidesJs = '[]';
 
         if ($slides = $this->getSlideResources()) {
-            $sources = [ ];
+            $sources = [];
             /** @var \TYPO3\Flow\Resource\Resource $slide */
             foreach ($slides as $slide) {
                 $sources[] = "{ src: '{$this->resourceManager->getPublicPersistentResourceUri($slide)}' }";
             }
-            $vegasJsOptions = '[' . implode(',', $sources) . ']';
+            $vegasSlidesJs = '[' . implode(',', $sources) . ']';
         }
 
-        $this->view->assign('vegasJsOptions', $vegasJsOptions);
+        $this->view->assignMultiple([
+            'mode'          => 2,
+            'vegasSlidesJs' => $vegasSlidesJs
+        ]);
     }
 
     /**
@@ -58,9 +110,9 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
      */
     protected function getSlideResources()
     {
-        $return = [ ];
+        $return = [];
 
-        if ($slides = $this->resourceManager->getCollection($this->settings['slides']['collection'])->getObjects()) {
+        if ($slides = $this->resourceManager->getCollection($this->settings[ 'slides' ][ 'collection' ])->getObjects()) {
             /** @var \TYPO3\Flow\Resource\Storage\Object $slide */
             foreach ($slides as $slide) {
                 /** @var \TYPO3\Flow\Resource\Resource $resource */
@@ -69,12 +121,23 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
                 if (!$resource instanceof \TYPO3\Flow\Resource\Resource) {
                     continue;
                 }
-                $return[preg_replace('![^a-z0-_9\s+]+!', '', strtolower($resource->getFilename()))] = $resource;
+                $return[ preg_replace('![^a-z0-_9\s+]+!', '', strtolower($resource->getFilename())) ] = $resource;
             }
         }
         ksort($return, SORT_NATURAL);
 
         return $return;
+    }
+
+    /**
+     * @param string $id
+     * @param array  $arguments
+     *
+     * @return string
+     */
+    protected function translate($id, array $arguments = [])
+    {
+        return $this->translator->translateById($id, $arguments, null, $this->lang, 'Main', $this->request->getControllerPackageKey());
     }
 
 }

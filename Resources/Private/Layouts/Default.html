@@ -18,25 +18,23 @@
         <f:render section="HeaderJS" />
     </head>
     <body>
-        <f:if condition="{hideUserPanel} == 0">
-            <f:security.ifAuthenticated>
-                <div id="user-panel">
-                    <div id="user-panel-inner">
-                        <i class="fa fa-user fa-fw"></i> {user} &nbsp; &nbsp;
-                        <f:link.action action="logout" controller="Authentication" class="btn btn-danger">
-                            <i class="fa fa-sign-out fa-fw"></i> Logout
-                        </f:link.action>
-                    </div>
+        <f:security.ifAuthenticated>
+            <div id="user-panel">
+                <div id="user-panel-inner">
+                    <i class="fa fa-user fa-fw"></i> {user} &nbsp; &nbsp;
+                    <f:link.action action="logout" controller="Authentication" class="btn btn-danger">
+                        <i class="fa fa-sign-out fa-fw"></i> Logout
+                    </f:link.action>
                 </div>
-            </f:security.ifAuthenticated>
-        </f:if>
+            </div>
+        </f:security.ifAuthenticated>
         <f:render section="Content" />
-        <f:if condition="{hideUserPanel} == 0">
-            <f:security.ifAuthenticated>
-                <script>function f(){var e=$(window).scrollTop(),d=1,g=$("#user-panel");if(e>d){g.addClass("sticky").siblings().first().css("padding-top",54)}else{g.removeClass("sticky").siblings().first().css("padding-top",0)}}$(function(){$(window).scroll(f);f()});</script>
-            </f:security.ifAuthenticated>
-        </f:if>
-        <script>
+        <f:security.ifAuthenticated>
+            <script type="text/javascript">
+                function f(){var e=$(window).scrollTop(),d=1,g=$("#user-panel");if(e>d){g.addClass("sticky").siblings().first().css("padding-top",54)}else{g.removeClass("sticky").siblings().first().css("padding-top",0)}}$(function(){$(window).scroll(f);f()});
+            </script>
+        </f:security.ifAuthenticated>
+        <script type="text/javascript">
             $(function() {
                 $('.flashmessages > div').each(function(e, f) {
                     $(this).delay((e * 500) + 5000).slideUp({duration: 250});

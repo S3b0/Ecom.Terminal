@@ -8,36 +8,25 @@ namespace Ecom\Terminal\Controller;
 use TYPO3\Flow\Annotations as Flow;
 use Ecom\Terminal\Domain\Model\Appointment;
 use Ecom\Terminal\Domain\Model\Participant;
+use TYPO3\Flow\Error\Message;
 
 class AdministrationController extends StandardController
 {
     /**
-     * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
      * @Flow\Inject
+     * @var \TYPO3\Flow\Security\Authentication\AuthenticationManagerInterface
      */
     protected $authenticationManager;
 
     /**
-     * @var \Ecom\Terminal\Domain\Repository\AppointmentRepository
      * @Flow\Inject
-     */
-    protected $appointmentRepository;
-
-    /**
      * @var \Ecom\Terminal\Domain\Repository\ParticipantRepository
-     * @Flow\Inject
      */
     protected $participantRepository;
 
     /**
-     * @var \TYPO3\Flow\Resource\ResourceManager
      * @Flow\Inject
-     */
-    protected $resourceManager;
-
-    /**
      * @var \TYPO3\Flow\Resource\ResourceRepository
-     * @Flow\Inject
      */
     protected $resourceRepository;
 
@@ -48,6 +37,7 @@ class AdministrationController extends StandardController
      */
     public function initializeAction()
     {
+        parent::initializeAction();
         if ($this->authenticationManager->isAuthenticated() === false) {
             $this->redirect('login', 'Authentication');
         }
@@ -116,7 +106,7 @@ class AdministrationController extends StandardController
                 $this->persistenceManager->whitelistObject($newParticipant);
             }
         }
-        $this->addFlashMessage('Created a new appointment.');
+        $this->addFlashMessage($this->translate('fm.appointmentCreated'));
         $this->redirect('index');
     }
 
@@ -142,12 +132,72 @@ class AdministrationController extends StandardController
 
     /**
      * @param \Ecom\Terminal\Domain\Model\Appointment $appointment
+     * @param array                                   $participants
      * @return void
      */
-    public function updateAppointmentAction(Appointment $appointment)
+    public function updateAppointmentAction(Appointment $appointment, array $participants = [])
     {
         $this->appointmentRepository->update($appointment);
-        $this->addFlashMessage('Updated the appointment.');
+        if (sizeof($participants)) {
+            $currentAmmountOfParticipants = $appointment->getParticipants() instanceof \Countable ? $appointment->getParticipants()->count() : 0;
+            $keepParticipants = [];
+            $keepExisitingParticipants = 0;
+            foreach ($participants as $participant) {
+                if ($appointment->participantExists($participant) || ($participant['salutation'] === '' && $participant['name'] === '')) {
+                    $keepParticipants[] = $appointment->getParticipant($participant);
+                    $keepExisitingParticipants++;
+                    continue;
+                }
+                $newParticipant = new Participant($participant, $appointment);
+                $this->participantRepository->add($newParticipant);
+                $this->persistenceManager->whitelistObject($newParticipant);
+                $keepParticipants[] = $newParticipant;
+            }
+            if ($currentAmmountOfParticipants > $keepExisitingParticipants) {
+                /** @var \Ecom\Terminal\Domain\Model\Participant $participant */
+                foreach ($appointment->getParticipants() as $participant) {
+                    if (in_array($participant, $keepParticipants)) {
+                        continue;
+                    }
+                    #$this->persistenceManager->whitelistObject($participant);
+                    $appointment->removeParticipant($participant);
+                }
+            }
+        }
+        $this->addFlashMessage($this->translate('fm.appointmentUpdated', [ $appointment->getName() ]));
+        $this->redirect('index');
+    }
+
+    /**
+     * @param Appointment $appointment
+     *
+     * @throws \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     */
+    public function deleteAppointmentAction(Appointment $appointment)
+    {
+        $this->persistenceManager->whitelistObject($appointment);
+        if ($appointment->hasParticipants()) {
+            /** @var Participant $participant */
+            foreach ($appointment->getParticipants() as $participant) {
+                $this->persistenceManager->whitelistObject($participant);
+            }
+        }
+        $this->appointmentRepository->remove($appointment);
+        $this->addFlashMessage('', $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_WARNING);
+        $this->redirect('index');
+    }
+
+    /**
+     * @param Appointment $appointment
+     *
+     * @throws \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     */
+    public function deleteImageAction(Appointment $appointment)
+    {
+        $appointment->setImage();
+        $this->persistenceManager->whitelistObject($appointment);
+        $this->appointmentRepository->update($appointment);
+        $this->addFlashMessage('', $this->translate('fm.imageRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
         $this->redirect('index');
     }
 
@@ -165,15 +215,13 @@ class AdministrationController extends StandardController
                     /** @var Participant $participant */
                     foreach ($appointment->getParticipants() as $participant) {
                         $this->persistenceManager->whitelistObject($participant);
-                        $appointment->removeParticipant($participant);
-                        $this->participantRepository->remove($participant);
                     }
                 }
                 $this->appointmentRepository->remove($appointment);
+                $this->addFlashMessage($this->translate('fm.appointmentRemoved.message', [ $appointment->getEndtime()->format($this->settings['date']['format']['long']) ]), $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_WARNING);
             }
-            $this->addFlashMessage('Deleted outdated appointments');
         } else {
-            $this->addFlashMessage('Nothing to do!');
+            $this->addFlashMessage($this->translate('fm.noActionNeeded'));
         }
         $this->redirect('index');
     }
@@ -201,12 +249,12 @@ class AdministrationController extends StandardController
                     foreach ($collection->getObjects() as $object) {
                         if ($resource->getSha1() === $object->getSha1()) {
                             $this->resourceManager->deleteResource($resource);
-                            $this->addFlashMessage("{$resource->getFilename()} already added to collection.", 'Duplicate Entry!', \TYPO3\Flow\Error\Message::SEVERITY_WARNING);
+                            $this->addFlashMessage($this->translate('fm.slideDuplicate.message', [ $resource->getFilename() ]), $this->translate('fm.slideDuplicate.title'), Message::SEVERITY_WARNING);
                             continue 2;
                         }
                     }
                 }
-                $this->addFlashMessage("Added {$resource->getFilename()} to collection.", 'Slide added!');
+                $this->addFlashMessage($this->translate('fm.slideAdded.message', [ $resource->getFilename() ]), $this->translate('fm.slideAdded.title'));
             }
             $collection->publish();
         }
@@ -214,7 +262,7 @@ class AdministrationController extends StandardController
     }
 
     /**
-     * @param string $slide SHA-1 fingerprint of file (did not work with resource, returned null)
+     * @param string $slide SHA-1 fingerprint of file (not working with Resource type, returns null)
      * @todo check for possibility using resource argument afterwards
      * @return void
      */
@@ -225,9 +273,9 @@ class AdministrationController extends StandardController
         if ($resource instanceof \TYPO3\Flow\Resource\Resource) {
             $this->persistenceManager->whitelistObject($resource);
             $this->resourceRepository->remove($resource);
-            $this->addFlashMessage("Removed {$resource->getFilename()} from collection.", 'Slide removed!');
+            $this->addFlashMessage($this->translate('fm.slideRemoved.message', [ $resource->getFilename() ]), $this->translate('fm.slideRemoved.title'));
         } else {
-            $this->addFlashMessage('Slide not found.', '', \TYPO3\Flow\Error\Message::SEVERITY_WARNING);
+            $this->addFlashMessage($this->translate('fm.slideNotFound'), '', Message::SEVERITY_WARNING);
         }
 
         $this->redirect('index');

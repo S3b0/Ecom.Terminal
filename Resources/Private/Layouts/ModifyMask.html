@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title><f:render section="Title" /></title>
+        <f:base />
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/main.css')}" />
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <!-- TWBS: minified CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/bootstrap/dist/css/bootstrap.min.css')}">
+        <!-- DateTimePicker CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}" />
+        <!-- ColorPicker CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}" />
+        <!-- jQuery -->
+        <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+        <!-- TWBS: minified JavaScript -->
+        <script src="{f:uri.resource(path: 'bower_components/bootstrap/dist/js/bootstrap.min.js')}"></script>
+        <!-- Moment.js -->
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/moment/min/moment.min.js')}"></script>
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/moment/min/locales.min.js')}"></script>
+        <!-- DateTimePicker JS -->
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}"></script>
+        <!-- ColorPicker JS -->
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}"></script>
+    </head>
+    <body>
+        <f:security.ifAuthenticated>
+            <div id="user-panel">
+                <div id="user-panel-inner">
+                    <i class="fa fa-user fa-fw"></i> {user} &nbsp; &nbsp;
+                    <f:link.action action="logout" controller="Authentication" class="btn btn-danger">
+                        <i class="fa fa-sign-out fa-fw"></i> Logout
+                    </f:link.action>
+                </div>
+            </div>
+        </f:security.ifAuthenticated>
+        <f:render section="Content" />
+        <f:security.ifAuthenticated>
+            <script type="text/javascript">
+                function f(){var e=$(window).scrollTop(),d=1,g=$("#user-panel");if(e>d){g.addClass("sticky").siblings().first().css("padding-top",54)}else{g.removeClass("sticky").siblings().first().css("padding-top",0)}}$(function(){$(window).scroll(f);f()});
+            </script>
+        </f:security.ifAuthenticated>
+        <script type="text/javascript">
+            $(function() {
+                var jsTriggerST = $('#js-trigger-starttime'),
+                    jsTriggerET = $('#js-trigger-endtime'),
+                    date = new Date();
+                    dpOptions = {
+                        allowInputToggle: true,
+                        daysOfWeekDisabled: [0, 6],
+                        format: 'YYYY-MM-DD HH:mm',
+                        icons: {
+                            time: "fa fa-clock-o",
+                            date: "fa fa-calendar",
+                            up: "fa fa-arrow-up",
+                            down: "fa fa-arrow-down"
+                        },
+                        locale: 'de',
+                        minDate: new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
+                        showClear: true,
+                        showClose: true,
+                        showTodayButton: true,
+                        sideBySide: true,
+                        stepping: 15,
+                        useCurrent: false
+                    };
+                jsTriggerST.datetimepicker(dpOptions);
+                jsTriggerET.datetimepicker(dpOptions);
+                jsTriggerST.on("dp.change", function (e) {
+                    var minDate = new Date(e.date),
+                        setDate = new Date(e.date);
+                    minDate.setTime(minDate.getTime() + 900000);
+                    setDate.setHours(setDate.getHours() + 8);
+                    var tokens = {
+                        year: setDate.getFullYear(),
+                        month: (setDate.getMonth() < 9 ? '0' : '') + (setDate.getMonth() + 1),
+                        date: (setDate.getDate() < 10 ? '0' : '') + (setDate.getDate()),
+                        hours: (setDate.getHours() < 10 ? '0' : '') + (setDate.getHours()),
+                        minutes: (setDate.getMinutes() < 10 ? '0' : '') + (setDate.getMinutes())
+                    };
+                    jsTriggerET.data("DateTimePicker").minDate(minDate);
+                    $('#endtime').val(tokens.year + '-' + tokens.month + '-' + tokens.date + ' ' + tokens.hours + ':' + tokens.minutes);
+                });
+
+                var counter = $('.js-delete-participant').length,
+                    pattern = $('#new-participant').html();
+                $('#js-add-participant').on('click', function() {
+                    var regex   = new RegExp('participants\\\[' + (counter - 1) + '\\\]', 'igm'),
+                        replace = 'participants[' + counter + ']';
+                    pattern = pattern.replace(regex, replace);
+                    pattern = pattern.replace('js-delete-participant-' + (counter - 1), 'js-delete-participant-' + counter);
+                    $('#participants').append('<div id="participant-' + counter + '">' + pattern + '</div>');
+                    $('#js-delete-participant-' + counter).on('click', function() {
+                        $(this).parent().remove();
+                    });
+                    counter++;
+                });
+                $('.js-delete-participant').on('click', function() {
+                    $(this).parent().remove();
+                });
+
+                $('.colorpicker').colorpicker({
+                    customClass: 'colorpicker-2x',
+                    sliders: {
+                        saturation: {
+                            maxLeft: 200,
+                            maxTop: 200
+                        },
+                        hue: {
+                            maxTop: 200
+                        },
+                        alpha: {
+                            maxTop: 200
+                        }
+                    }
+                });
+
+                $('.flashmessages > div').each(function(e, f) {
+                    $(this).delay((e * 500) + 5000).slideUp({duration: 250});
+                });
+            });
+        </script>
+    </body>
+</html>

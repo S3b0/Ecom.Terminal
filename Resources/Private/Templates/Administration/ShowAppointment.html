@@ -13,25 +13,29 @@
         <div class="clearfix">&nbsp;</div>
         <table class="table table-striped table-hover">
             <tr>
-                <td><i class="fa fa fa-clock-o fa-fw text-success"></i> Starttime</td>
-                <td>{appointment.starttime -> f:format.date(format: 'l, F jS Y h:i A')}</td>
+                <td><i class="fa fa fa-clock-o fa-fw text-success"></i> <f:translate id="form.starttime" /></td>
+                <td>{appointment.starttime -> f:format.date(format: settings.date.format.long, forceLocale: settings.i18n.defaultLocale)}</td>
             </tr>
             <tr>
-                <td><i class="fa fa fa-clock-o fa-fw text-danger"></i> Endtime</td>
-                <td>{appointment.endtime -> f:format.date(format: 'l, F jS Y h:i A')}</td>
+                <td><i class="fa fa fa-clock-o fa-fw text-danger"></i> <f:translate id="form.endtime" /></td>
+                <td>{appointment.endtime -> f:format.date(format: settings.date.format.long, forceLocale: settings.i18n.defaultLocale)}</td>
             </tr>
             <tr>
-                <td><i class="fa fa-picture-o fa-fw"></i> Image</td>
+                <td><i class="fa fa fa-globe fa-fw"></i> <f:translate id="form.displayLanguage" /></td>
+                <td>{appointment.displayLanguage}</td>
+            </tr>
+            <tr>
+                <td><i class="fa fa-picture-o fa-fw"></i> <f:translate id="image" /></td>
                 <td>
                     <f:if condition="{appointment.image}">
-                        <a href="{f:uri.resource(resource: appointment.image)}" target="_blank" title="Show original size">
+                        <a href="{f:uri.resource(resource: appointment.image)}" target="_blank" title="{f:translate(id: 'title.image.show')}">
                             <img src="{f:uri.resource(resource: appointment.image)}" width="400" />
                         </a>
                     </f:if>
                 </td>
             </tr>
             <tr>
-                <td><i class="fa fa-users fa-fw"></i> Participants</td>
+                <td><i class="fa fa-users fa-fw"></i> <f:translate id="participants" /></td>
                 <td>
                     <f:if condition="{appointment.participants -> f:count()}">
                         <f:then>
@@ -44,6 +48,6 @@
                 </td>
             </tr>
         </table>
-        <f:link.action action="index" class="btn btn-default">Back</f:link.action>
+        <f:link.action action="index" class="btn btn-default"><f:translate id="back" /></f:link.action>
     </div>
 </f:section>

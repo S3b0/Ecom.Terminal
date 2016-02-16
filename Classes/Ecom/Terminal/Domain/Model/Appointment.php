@@ -33,6 +33,19 @@ class Appointment
     protected $name;
 
     /**
+     * @ORM\Column(length=2)
+     * @var string
+     */
+    protected $displayLanguage = 'en';
+
+    /**
+     * @Flow\Validate(type="RegularExpression", options={ "regularExpression"="/^\#[0-9a-f]{6}$/i" })
+     * @ORM\Column(length=7)
+     * @var string
+     */
+    protected $fontColor = '#000000';
+
+    /**
      * @ORM\OneToOne(cascade={"persist"})
      * @ORM\Column(nullable=true)
      * @var \TYPO3\Flow\Resource\Resource
@@ -72,11 +85,13 @@ class Appointment
 
     /**
      * @param \DateTime $starttime
+     *
      * @return Appointment
      */
     public function setStarttime($starttime)
     {
         $this->starttime = $starttime;
+
         return $this;
     }
 
@@ -90,11 +105,13 @@ class Appointment
 
     /**
      * @param \DateTime $endtime
+     *
      * @return Appointment
      */
     public function setEndtime($endtime)
     {
         $this->endtime = $endtime;
+
         return $this;
     }
 
@@ -108,11 +125,53 @@ class Appointment
 
     /**
      * @param string $name
+     *
      * @return Appointment
      */
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDisplayLanguage()
+    {
+        return $this->displayLanguage;
+    }
+
+    /**
+     * @param string $displayLanguage
+     *
+     * @return Appointment
+     */
+    public function setDisplayLanguage($displayLanguage)
+    {
+        $this->displayLanguage = substr($displayLanguage, 0, 2);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFontColor()
+    {
+        return $this->fontColor;
+    }
+
+    /**
+     * @param string $fontColor
+     *
+     * @return Appointment
+     */
+    public function setFontColor($fontColor)
+    {
+        $this->fontColor = $fontColor;
+
         return $this;
     }
 
@@ -126,11 +185,13 @@ class Appointment
 
     /**
      * @param \TYPO3\Flow\Resource\Resource $image
+     *
      * @return Appointment
      */
     public function setImage(\TYPO3\Flow\Resource\Resource $image = null)
     {
         $this->image = $image;
+
         return $this;
     }
 
@@ -144,16 +205,19 @@ class Appointment
 
     /**
      * @param \Doctrine\Common\Collections\Collection $participants
+     *
      * @return Appointment
      */
     public function setParticipants(\Doctrine\Common\Collections\Collection $participants)
     {
         $this->participants = $participants;
+
         return $this;
     }
 
     /**
      * @param Participant $participant
+     *
      * @return void
      */
     public function addParticipant(Participant $participant)
@@ -163,6 +227,7 @@ class Appointment
 
     /**
      * @param Participant $participant
+     *
      * @return void
      */
     public function removeParticipant(Participant $participant)
@@ -176,6 +241,44 @@ class Appointment
     public function hasParticipants()
     {
         return $this->participants instanceof \Doctrine\Common\Collections\Collection && $this->participants->count();
+    }
+
+    /**
+     * @param $data
+     *
+     * @return Participant|null
+     */
+    public function getParticipant($data)
+    {
+        if ($this->hasParticipants()) {
+            /** @var Participant $participant */
+            foreach ($this->participants as $participant) {
+                if ($participant->getSalutation() === (int)$data[ 'salutation' ] && $participant->getName() === $data[ 'name' ]) {
+                    return $participant;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param array $data
+     *
+     * @return bool
+     */
+    public function participantExists($data)
+    {
+        if ($this->hasParticipants()) {
+            /** @var Participant $participant */
+            foreach ($this->participants as $participant) {
+                if ($participant->getSalutation() === (int)$data[ 'salutation' ] && $participant->getName() === $data[ 'name' ]) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**

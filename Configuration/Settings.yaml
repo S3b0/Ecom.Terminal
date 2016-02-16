@@ -25,5 +25,18 @@ TYPO3:
 
 Ecom:
   Terminal:
+    fontColors:
+      cccccc: 'light grey'
+      ffffff: 'white'
+    i18n:
+      defaultLocale: 'en'
+      available:
+        en: 'English'
+        de: 'Deutsch'
     slides:
       collection: 'ecom.terminal'
+    date:
+      format:
+        short: 'Y-m-d » h:i A'
+        long: 'l jS \of F Y h:i:s A'
+      timezone: 'Europe/Berlin'

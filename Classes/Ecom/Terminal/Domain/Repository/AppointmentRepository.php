@@ -28,9 +28,33 @@ class AppointmentRepository extends Repository
 
         return $query->matching(
             $query->greaterThan('endtime', new \DateTime())
-        )->setOrderings([
-            'starttime' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_DESCENDING
-        ])->execute();
+        )->execute();
+    }
+
+    /**
+     * @param \DateTimeZone $dateTimeZone
+     * @return QueryResultInterface
+     */
+    public function findTodaysAppointments(\DateTimeZone $dateTimeZone)
+    {
+        $query    = $this->createQuery();
+        $now = new \DateTime('now', $dateTimeZone);
+
+        return $query->matching(
+            $query->logicalAnd([
+                $query->lessThanOrEqual('starttime', $now),
+                $query->greaterThanOrEqual('endtime', $now)
+            ])
+        )->execute();
+    }
+
+    /**
+     * @param \DateTimeZone $dateTimeZone
+     * @return object
+     */
+    public function findCurrentAppointment(\DateTimeZone $dateTimeZone)
+    {
+        return $this->findTodaysAppointments($dateTimeZone)->getFirst();
     }
 
     /**

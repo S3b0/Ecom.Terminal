@@ -1,6 +1,6 @@
 <f:layout name="Default" />
 
-<f:section name="Title">Upload Slides</f:section>
+<f:section name="Title"><f:translate id="slideupload.title" /></f:section>
 
 <f:section name="Styles"></f:section>
 <f:section name="HeaderJS"></f:section>
@@ -8,20 +8,20 @@
 <f:section name="Content">
     <div class="container">
         <div class="row">
-            <h1>Upload Slides</h1>
+            <h1><f:translate id="form.slideUpload.title" /></h1>
         </div>
         <div class="clearfix">&nbsp;</div>
         <div class="row">
             <f:form action="processSlideUpload" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="slides">Image</label>
+                    <label for="slides"><f:translate id="form.slideUpload.label" /></label>
                     <f:form.upload name="slides[]" id="slides" additionalAttributes="{accept: 'image/gif, image/jpeg, image/png', multiple: 'multiple'}" />
-                    <p class="help-block">Upload an image used for fullscreen background slider.</p>
+                    <p class="help-block"><f:translate id="form.slideUpload.help" /></p>
                 </div>
                 <div class="clearfix">&nbsp;</div>
                 <div class="form-group">
-                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-upload fa-fw"></i> Upload</f:form.button> &nbsp;
-                    <f:link.action action="index" class="btn btn-danger">Cancel</f:link.action>
+                    <f:form.button class="btn btn-primary" type="submit" id="submit"><i class="fa fa-upload fa-fw"></i> <f:translate id="slides.upload" /></f:form.button>
+                    <f:link.action action="index" class="btn btn-danger"><f:translate id="cancel" /></f:link.action>
                 </div>
             </f:form>
         </div>

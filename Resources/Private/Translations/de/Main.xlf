@@ -1,215 +1,276 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <xliff version="1.0">
-    <file source-language="en" datatype="plaintext" original="messages" date="2016-01-28T11:48:47Z" product-name="Ecom.Terminal">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-12T09:38:47Z" product-name="Ecom.Terminal">
         <header/>
         <body>
             <!-- GENERIC -->
             <trans-unit id="terminal" xml:space="preserve">
                 <source>Terminal</source>
+                <target>Terminal</target>
             </trans-unit>
             <trans-unit id="login" xml:space="preserve">
                 <source>Login</source>
+                <target>Login</target>
             </trans-unit>
             <trans-unit id="registration" xml:space="preserve">
                 <source>Registration</source>
+                <target>Registrierung</target>
             </trans-unit>
             <trans-unit id="user" xml:space="preserve">
                 <source>User</source>
+                <target>Benutzer</target>
             </trans-unit>
             <trans-unit id="password" xml:space="preserve">
                 <source>Password</source>
+                <target>Passwort</target>
             </trans-unit>
             <trans-unit id="repeat" xml:space="preserve">
                 <source>repeat</source>
+                <target>wiederholen</target>
             </trans-unit>
             <trans-unit id="welcomeText" xml:space="preserve">
                 <source>Today we welcome</source>
+                <target>Heute begrüßen wir</target>
             </trans-unit>
             <trans-unit id="name" xml:space="preserve">
                 <source>Name</source>
+                <target>Name</target>
             </trans-unit>
             <trans-unit id="title" xml:space="preserve">
                 <source>Title</source>
+                <target>Titel</target>
             </trans-unit>
             <trans-unit id="participants" xml:space="preserve">
                 <source>Participants</source>
+                <target>Teilnehmer</target>
             </trans-unit>
             <trans-unit id="image" xml:space="preserve">
                 <source>Image</source>
+                <target>Bild</target>
             </trans-unit>
             <trans-unit id="gender" xml:space="preserve">
                 <source>-</source>
+                <target>-</target>
             </trans-unit>
             <trans-unit id="gender0" xml:space="preserve">
                 <source>Mr.</source>
+                <target>Herr</target>
             </trans-unit>
             <trans-unit id="gender1" xml:space="preserve">
                 <source>Ms.</source>
+                <target>Frau</target>
             </trans-unit>
             <trans-unit id="gender2" xml:space="preserve">
                 <source>Mrs.</source>
+                <target>Fräulein</target>
             </trans-unit>
             <trans-unit id="slides" xml:space="preserve">
                 <source>Slides</source>
+                <target>Dias</target>
             </trans-unit>
             <trans-unit id="back" xml:space="preserve">
                 <source>Back</source>
+                <target>Zurück</target>
             </trans-unit>
 
             <!-- FLASHMESSAGES -->
             <trans-unit id="fm.appointmentCreated" xml:space="preserve">
                 <source>Created a new appointment.</source>
+                <target>Neuen Termin angelegt.</target>
             </trans-unit>
             <trans-unit id="fm.appointmentUpdated" xml:space="preserve">
                 <source>Appointment '{0}' was updated.</source>
+                <target>Der Termin '{0}' wurde aktualisiert.</target>
             </trans-unit>
             <trans-unit id="fm.appointmentRemoved.title" xml:space="preserve">
                 <source>Outdated appointment '{0}' was removed!</source>
+                <target>Der abgelaufene Termin '{0}' wurde gelöscht!</target>
             </trans-unit>
             <trans-unit id="fm.appointmentRemoved.message" xml:space="preserve">
                 <source>The appointment has expired on {0}.</source>
+                <target>Der Termin ist am {0} abgelaufen.</target>
             </trans-unit>
             <trans-unit id="fm.imageRemoved.title" xml:space="preserve">
                 <source>Image was removed from appointment '{0}'!</source>
+                <target>Das Bild wurde vom Termin '{0}' entfernt!</target>
             </trans-unit>
             <trans-unit id="fm.noActionNeeded" xml:space="preserve">
                 <source>Nothing to do!</source>
+                <target>Nichts zu tun!</target>
             </trans-unit>
             <trans-unit id="fm.slideAdded.title" xml:space="preserve">
                 <source>Slide added!</source>
+                <target>Dia hinzugefügt!</target>
             </trans-unit>
             <trans-unit id="fm.slideAdded.message" xml:space="preserve">
                 <source>Added {0}.</source>
+                <target>{0} hinzugefügt.</target>
             </trans-unit>
             <trans-unit id="fm.slideRemoved.title" xml:space="preserve">
                 <source>Slide removed!</source>
+                <target>Dia gelöscht!</target>
             </trans-unit>
             <trans-unit id="fm.slideRemoved.message" xml:space="preserve">
                 <source>Removed {0}.</source>
+                <target>{0} gelöscht.</target>
             </trans-unit>
             <trans-unit id="fm.slideDuplicate.title" xml:space="preserve">
                 <source>Duplicate discovered!</source>
+                <target>Duplikat entdeckt!</target>
             </trans-unit>
             <trans-unit id="fm.slideDuplicate.message" xml:space="preserve">
                 <source>{0} already exists.</source>
+                <target>{0} existiert bereits.</target>
             </trans-unit>
             <trans-unit id="fm.slideNotFound" xml:space="preserve">
                 <source>Slide not found.</source>
+                <target>Dia nicht gefunden.</target>
             </trans-unit>
 
             <!-- BUTTONS -->
             <trans-unit id="appointment.new" xml:space="preserve">
                 <source>New appointment</source>
+                <target>Neuer Termin</target>
             </trans-unit>
             <trans-unit id="appointment.edit" xml:space="preserve">
                 <source>Edit appointment</source>
+                <target>Termin bearbeiten</target>
             </trans-unit>
             <trans-unit id="appointment.add" xml:space="preserve">
                 <source>Add appointment</source>
+                <target>Termin hinzufügen</target>
             </trans-unit>
             <trans-unit id="appointment.save" xml:space="preserve">
                 <source>Save appointment</source>
-            </trans-unit>
-            <trans-unit id="participant.add" xml:space="preserve">
-                <source>Add Participant</source>
+                <target>Termin speichern</target>
             </trans-unit>
             <trans-unit id="slides.upload" xml:space="preserve">
                 <source>Upload</source>
+                <target>Hochladen</target>
+            </trans-unit>
+            <trans-unit id="participant.add" xml:space="preserve">
+                <source>Add Participant</source>
+                <target>Teilnehmer hinzufügen</target>
             </trans-unit>
             <trans-unit id="slides.add" xml:space="preserve">
                 <source>Add Slides</source>
+                <target>Dias hinzufügen</target>
             </trans-unit>
             <trans-unit id="register" xml:space="preserve">
                 <source>Register</source>
+                <target>Registrieren</target>
             </trans-unit>
             <trans-unit id="cancel" xml:space="preserve">
                 <source>Cancel</source>
+                <target>Abbrechen</target>
             </trans-unit>
             <trans-unit id="cleanupDB" xml:space="preserve">
                 <source>Clean DB</source>
+                <target>Datenbank aufräumen</target>
             </trans-unit>
 
             <!-- ADMIN AREA -->
             <trans-unit id="adm.title" xml:space="preserve">
                 <source>Admin Area</source>
+                <target>Administrationsbereich</target>
             </trans-unit>
             <trans-unit id="adm.manageAppointments" xml:space="preserve">
                 <source>Manage Appointments</source>
+                <target>Termine verwalten</target>
             </trans-unit>
             <trans-unit id="adm.slides.description" xml:space="preserve">
                 <source><![CDATA[Slides should apply monitor aspect ratio.
 Slides are sorted by filename. Hover thumbnails to see filename as title.]]></source>
+                <target><![CDATA[Dias sollten dem Monitor-Seitenverhältnis angepasst sein.
+Dias werden nach Dateinamen sortiert. Fahren Sie mit der Maus über die Vorschaubilder, um den Dateinamen zu erfahren.]]></target>
             </trans-unit>
 
             <!-- FORMS / FORM FIELDS -->
             <trans-unit id="form.title.placeholder" xml:space="preserve">
                 <source>Enter some title</source>
+                <target>Geben Sie einen Titel an</target>
             </trans-unit>
             <trans-unit id="form.starttime" xml:space="preserve">
                 <source>Starting</source>
+                <target>Beginnt</target>
             </trans-unit>
             <trans-unit id="form.endtime" xml:space="preserve">
                 <source>Ending</source>
+                <target>Endet</target>
             </trans-unit>
             <trans-unit id="form.displayLanguage" xml:space="preserve">
                 <source>Language (Display)</source>
+                <target>Sprache (Anzeige)</target>
             </trans-unit>
             <trans-unit id="form.fontColor" xml:space="preserve">
                 <source>Font color</source>
+                <target>Schriftfarbe</target>
             </trans-unit>
             <trans-unit id="form.fontColor.help" xml:space="preserve">
                 <source>Applies on custom background images</source>
+                <target>Gilt für individuelle Hintergrundbilder</target>
             </trans-unit>
             <trans-unit id="form.starttime.placeholder" xml:space="preserve">
                 <source>Enter start time</source>
+                <target>Geben Sie die Startzeit an</target>
             </trans-unit>
             <trans-unit id="form.endtime.placeholder" xml:space="preserve">
                 <source>Enter end time</source>
+                <target>Geben Sie die Endzeit an</target>
             </trans-unit>
             <trans-unit id="form.participant.salutation" xml:space="preserve">
                 <source>Salutation</source>
+                <target>Anrede</target>
             </trans-unit>
             <trans-unit id="form.participant.name.placeholder" xml:space="preserve">
                 <source>Enter participants name</source>
+                <target>Geben Sie den Teilnehmernamen an</target>
             </trans-unit>
             <trans-unit id="form.image.help" xml:space="preserve">
                 <source>Custom background image (fullscreen display)</source>
+                <target>Individuelles Hintergrundbild (Vollbildanzeige)</target>
             </trans-unit>
             <trans-unit id="form.participant.remove" xml:space="preserve">
                 <source>Remove participant</source>
+                <target>Teilnehmer entfernen</target>
             </trans-unit>
             <trans-unit id="form.slideUpload.title" xml:space="preserve">
                 <source>Upload Slides</source>
+                <target>Dias hochladen</target>
             </trans-unit>
             <trans-unit id="form.slideUpload.label" xml:space="preserve">
                 <source>Slide Images</source>
+                <target>Dia Bilder</target>
             </trans-unit>
             <trans-unit id="form.slideUpload.help" xml:space="preserve">
                 <source>To select multiple files, hold down the CTRL or SHIFT key while selecting.</source>
+                <target>Zur Auswahl mehrerer Dateien halten Sie während der Selektion die STRG- oder SHIFT-Taste gedrückt.</target>
             </trans-unit>
 
             <!-- LINK TITLES -->
             <trans-unit id="title.image.show" xml:space="preserve">
                 <source>View image</source>
+                <target>Bild anzeigen</target>
             </trans-unit>
             <trans-unit id="title.image.delete" xml:space="preserve">
                 <source>Delete image</source>
+                <target>Bild entfernen</target>
             </trans-unit>
             <trans-unit id="title.appointment.show" xml:space="preserve">
                 <source>Show appointment</source>
+                <target>Termin anzeigen</target>
             </trans-unit>
             <trans-unit id="title.appointment.edit" xml:space="preserve">
                 <source>Edit appointment</source>
+                <target>Termin bearbeiten</target>
             </trans-unit>
             <trans-unit id="title.appointment.delete" xml:space="preserve">
                 <source>Delete appointment</source>
+                <target>Termin löschen</target>
             </trans-unit>
             <trans-unit id="title.slide.delete" xml:space="preserve">
                 <source>Remove slide</source>
-            </trans-unit>
-
-            <trans-unit id="modal.delete.confirm" xml:space="preserve">
-                <source>Are you sure?</source>
+                <target>Slide entfernen</target>
             </trans-unit>
         </body>
     </file>

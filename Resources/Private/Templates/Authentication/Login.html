@@ -1,13 +1,13 @@
 <f:layout name="Default" />
 
-<f:section name="Title">ecom Terminal - Login</f:section>
+<f:section name="Title"><f:translate id="terminal" /> - <f:translate id="login" /></f:section>
 
 <f:section name="Styles"></f:section>
 <f:section name="HeaderJS"></f:section>
 
 <f:section name="Content">
     <div class="container">
-        <div class="row"><h1>Terminal - Login</h1></div>
+        <div class="row"><h1><f:translate id="terminal" /> - <f:translate id="login" /></h1></div>
         <f:render partial="FlashMessages" />
         <div class="row">
             <f:security.ifAuthenticated>
@@ -17,7 +17,7 @@
                 <f:else>
                     <f:form action="authenticate">
                         <div class="form-group">
-                            <label for="identifier">User:</label>
+                            <label for="identifier"><f:translate id="user" />:</label>
                             <input type="text"
                                    name="__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][username]"
                                    class="form-control"
@@ -25,14 +25,14 @@
                                    autofocus="1" />
                         </div>
                         <div class="form-group">
-                            <label for="password">Pass:</label>
+                            <label for="password"><f:translate id="password" />:</label>
                             <input type="password"
                                    name="__authentication[TYPO3][Flow][Security][Authentication][Token][UsernamePassword][password]"
                                    class="form-control"
                                    id="password" />
                         </div>
                         <div class="clearfix">&nbsp;</div>
-                        <button type="submit" class="form-control btn btn-info"><i class="fa fa-sign-in fa-fw"></i> Login</button>
+                        <button type="submit" class="form-control btn btn-info"><i class="fa fa-sign-in fa-fw"></i> <f:translate id="login" /></button>
                     </f:form>
                 </f:else>
             </f:security.ifAuthenticated>

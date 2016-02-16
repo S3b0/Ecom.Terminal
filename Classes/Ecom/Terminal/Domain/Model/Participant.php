@@ -40,8 +40,8 @@ class Participant
      */
     public function __construct(array $data, Appointment $appointment)
     {
-        $this->salutation = $data['salutation'];
-        $this->name = $data['name'];
+        $this->salutation = $data[ 'salutation' ];
+        $this->name = $data[ 'name' ];
         $this->appointment = $appointment;
     }
 
@@ -55,6 +55,7 @@ class Participant
 
     /**
      * @param integer $salutation
+     *
      * @return void
      */
     public function setSalutation($salutation)
@@ -72,6 +73,7 @@ class Participant
 
     /**
      * @param string $name
+     *
      * @return void
      */
     public function setName($name)
@@ -89,6 +91,7 @@ class Participant
 
     /**
      * @param \Ecom\Terminal\Domain\Model\Appointment $appointment
+     *
      * @return void
      */
     public function setAppointment($appointment)

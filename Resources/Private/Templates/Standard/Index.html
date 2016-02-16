@@ -1,21 +1,68 @@
-<f:layout name="Default" />
+{namespace ecom=S3b0\ViewHelperCollection\ViewHelpers}
+<f:layout name="Terminal" />
 
 <f:section name="Title">ecom Terminal</f:section>
 
 <f:section name="Styles">
-    <link href="{f:uri.resource(path: 'Styles/jquery.maximage.min.css')}" rel="stylesheet" />
+    <f:if condition="{mode} == 2">
+        <!-- Vegas CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.css')}">
+    </f:if>
 </f:section>
 
 <f:section name="HeaderJS">
-    <script src="{f:uri.resource(path: 'bower_components/jquery-fullsizable/js/jquery-fullsizable.min.js')}"></script>
+    <f:if condition="{mode} == 2">
+        <!-- Vegas JS -->
+        <script src="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.js')}"></script>
+    </f:if>
 </f:section>
 
-<f:section name="Content">
-    <f:if condition="{slides}">
-        <iframe src="{f:uri.action(action: 'slideShow')}" id="fullscreen" />
-    </f:if>
+<f:section name="Body">
+    <ecom:sanitizeOutput><body class="fullscreen"{bodyStyle -> f:format.raw()}>
+        <f:if condition="{mode} == 1">
+            <header class="{f:if(condition: appointment.image, then: 'appointment-user', else: 'appointment-def')}">
+                <h1 {inlineStyleColor -> f:format.raw()}><f:translate id="welcomeText" /></h1>
+            </header>
+            <f:if condition="{appointment.image}"><hr class="appointment-user" style="border-color: {appointment.fontColor}" /></f:if>
+            <section class="{f:if(condition: appointment.image, then: 'appointment-user', else: 'appointment-def')}">
+                <f:if condition="{appointment.name}">
+                    <h2 {inlineStyleColor -> f:format.raw()}>{appointment.name}</h2>
+                </f:if>
+                <f:if condition="{appointment.participants}">
+                    <f:for each="{appointment.participants}" as="participant">
+                        <p {inlineStyleColor -> f:format.raw()}><f:translate id="gender{participant.salutation}" /> {participant.name}</p>
+                    </f:for>
+                </f:if>
+            </section>
+            <img src="_Resources/Static/Packages/Ecom.Terminal/Images/handshake.png" width="250" id="handshake" />
+        </f:if>
+        <f:if condition="{mode} == 2">
+            <![CDATA[<script type="text/javascript">
+                $(function() {
+                    $('body').vegas({
+                        delay: 6000,
+                        slides: ]]>{vegasSlidesJs}<![CDATA[
+                    });
+                });
+            </script>]]>
+        </f:if>
 
-    <script>
-        setTimeout(window.location.reload.bind(window.location), 900000);
-    </script>
+        <script>
+            var date = new Date(),
+                nextReload;
+            if (date.getMinutes() >= 0 && date.getMinutes() < 15) {
+                nextReload = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 15);
+            } else if (date.getMinutes() >= 15 && date.getMinutes() < 30) {
+                nextReload = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 30);
+            } else if (date.getMinutes() >= 30 && date.getMinutes() < 45) {
+                nextReload = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), 45);
+            } else {
+                nextReload = new Date(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours() + 1, 0);
+            }
+            nextReload.setTime(nextReload.getTime() + 1000);
+
+            console.log('Next automatic reload at ' + nextReload);
+            setTimeout(window.location.reload.bind(window.location), nextReload.getTime() - date.getTime());
+        </script>
+    </body></ecom:sanitizeOutput>
 </f:section>

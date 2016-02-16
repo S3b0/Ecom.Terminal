@@ -29,6 +29,28 @@ class AuthenticationController extends AbstractAuthenticationController
     protected $accountRepository;
 
     /**
+     * @var \TYPO3\Flow\I18n\Locale
+     */
+    protected $lang;
+
+    /**
+     * @Flow\Inject
+     * @var \TYPO3\Flow\I18n\Service
+     */
+    protected $languageService;
+
+    /**
+     * Initializes the controller before invoking an action method.
+     */
+    public function initializeAction()
+    {
+        $detector = new \TYPO3\Flow\I18n\Detector();
+        $this->lang = $detector->detectLocaleFromHttpHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']);
+        $this->settings['i18n']['defaultLocale'] = $this->lang->getLanguage();
+        $this->languageService->getConfiguration()->setCurrentLocale($this->lang);
+    }
+
+    /**
      * Will be triggered upon successful authentication
      *
      * @param ActionRequest $originalRequest The request that was intercepted by the security framework, NULL if there

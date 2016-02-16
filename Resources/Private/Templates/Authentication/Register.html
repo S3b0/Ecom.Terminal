@@ -1,6 +1,6 @@
 <f:layout name="Default" />
 
-<f:section name="Title">ecom Terminal - Login</f:section>
+<f:section name="Title"><f:translate id="terminal" /> - <f:translate id="registration" /></f:section>
 
 <f:section name="Styles"></f:section>
 <f:section name="HeaderJS"></f:section>
@@ -8,12 +8,12 @@
 <f:section name="Content">
     <div class="container">
         <f:render partial="FlashMessages" />
-        <div class="row"><h1>Terminal - Registration</h1></div>
+        <div class="row"><h1><f:translate id="terminal" /> - <f:translate id="registration" /></h1></div>
         <div class="clearfix">&nbsp;</div>
         <div class="row">
             <f:form action="create" method="post">
                 <div class="form-group">
-                    <label for="username">User:</label>
+                    <label for="username"><f:translate id="user" />:</label>
                     <f:form.textfield name="identifier"
                                       class="form-control"
                                       id="username"
@@ -21,13 +21,13 @@
                                       additionalAttributes="{autofocus: 1}" />
                 </div>
                 <div class="form-group">
-                    <label for="password">Pass:</label>
+                    <label for="password"><f:translate id="password" />:</label>
                     <f:form.password name="password"
                                      class="form-control"
                                      id="password" />
                 </div>
                 <div class="form-group">
-                    <label for="password-check">Pass repeat:</label>
+                    <label for="password-check"><f:translate id="password" /> <f:translate id="repeat" />:</label>
                     <f:form.password name="passwordCheck"
                                      class="form-control"
                                      id="password-check" />
@@ -35,7 +35,7 @@
 
                 <f:form.hidden name="role" value="0" />
                 <div class="clearfix">&nbsp;</div>
-                <f:form.button type="submit" class="form-control btn btn-info"><i class="fa fa-user-plus fa-fw"></i> Register</f:form.button>
+                <f:form.button type="submit" class="form-control btn btn-info"><i class="fa fa-user-plus fa-fw"></i> <f:translate id="register" /></f:form.button>
             </f:form>
         </div>
     </div>
