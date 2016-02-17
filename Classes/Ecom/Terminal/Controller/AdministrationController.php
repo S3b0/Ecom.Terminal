@@ -182,7 +182,13 @@ class AdministrationController extends StandardController
                     $appointment->removeParticipant($participant);
                 }
             }
+        } elseif ($appointment->hasParticipants()) {
+            /** @var Participant $participant */
+            foreach ($appointment->getParticipants() as $participant) {
+                $appointment->removeParticipant($participant);
+            }
         }
+
         $this->appointmentRepository->update($appointment);
         $this->addFlashMessage($this->translate('fm.appointmentUpdated', [ $appointment->getTitle() ]));
         $this->redirect();

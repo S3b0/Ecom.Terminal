@@ -10,10 +10,10 @@
         </div>
         <div class="clearfix">&nbsp;</div>
         <div class="row">
-            <f:form action="updateAppointment" objectName="appointment" enctype="multipart/form-data">
+            <f:form action="updateAppointment" objectName="appointment" enctype="multipart/form-data" additionalAttributes="{data-parsley-validate: 'data-parsley-validate'}">
                 <div class="form-group">
                     <label for="title"><f:translate id="title" /></label>
-                    <f:form.textfield property="title" class="form-control" id="title" value="{appointment.title}" placeholder="{f:translate(id: 'form.title.placeholder')}" />
+                    <f:form.textfield property="title" class="form-control" id="title" value="{appointment.title}" placeholder="{f:translate(id: 'form.title.placeholder')}" required="required" />
                 </div>
                 <div class="form-group">
                     <f:form.checkbox property="hideTitle" id="hideTitle" value="1" checked="{appointment.hideTitle}" /> <label for="hideTitle" style="font-weight: normal"><f:translate id="form.hideTitle" /></label>
@@ -23,22 +23,24 @@
                         <div class="form-group">
                             <label for="starttime"><f:translate id="form.starttime" /></label>
                             <div class='input-group date' id='js-trigger-starttime'>
-                                <f:form.textfield property="starttime" class="form-control" id="starttime" value="{appointment.starttime -> f:format.date(format: 'Y-m-d H:i')}" placeholder="{f:translate(id: 'form.starttime.placeholder')}" />
+                                <f:form.textfield property="starttime" class="form-control" id="starttime" value="{appointment.starttime -> f:format.date(format: 'Y-m-d H:i')}" placeholder="{f:translate(id: 'form.starttime.placeholder')}" required="required" additionalAttributes="{data-parsley-errors-container: '#starttime-error'}" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
+                            <div id="starttime-error"></div>
                         </div>
                     </div>
                     <div class='col-md-6'>
                         <div class="form-group">
                             <label for="endtime"><f:translate id="form.endtime" /></label>
                             <div class='input-group date' id='js-trigger-endtime'>
-                                <f:form.textfield property="endtime" class="form-control" id="endtime" value="{appointment.endtime -> f:format.date(format: 'Y-m-d H:i')}" placeholder="{f:translate(id: 'form.endtime.placeholder')}" />
+                                <f:form.textfield property="endtime" class="form-control" id="endtime" value="{appointment.endtime -> f:format.date(format: 'Y-m-d H:i')}" placeholder="{f:translate(id: 'form.endtime.placeholder')}" required="required" additionalAttributes="{data-parsley-errors-container: '#endtime-error'}" />
                                 <span class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </span>
                             </div>
+                            <div id="endtime-error"></div>
                         </div>
                     </div>
                 </div>
@@ -92,7 +94,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="participantName"><f:translate id="name" /></label>
-                                        <f:form.textfield name="participants[{iterator.index}][name]" class="form-control" id="participantName" value="{participant.name}" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" />
+                                        <f:form.textfield name="participants[{iterator.index}][name]" class="form-control" id="participantName" value="{participant.name}" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
                                     </div>
                                 </div>
                             </f:for>
@@ -110,7 +112,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="participantName"><f:translate id="name" /></label>
-                                    <f:form.textfield name="participants[{appointment.participants -> f:count()}][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" />
+                                    <f:form.textfield name="participants[{appointment.participants -> f:count()}][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
                                 </div>
                             </div>
                         </f:then>
@@ -129,7 +131,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="participantName"><f:translate id="name" /></label>
-                                    <f:form.textfield name="participants[0][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" />
+                                    <f:form.textfield name="participants[0][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
                                 </div>
                             </div>
                         </f:else>

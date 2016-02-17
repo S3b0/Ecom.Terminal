@@ -5,7 +5,7 @@
         <title><f:render section="Title" /></title>
         <f:base />
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/main.css')}" />
+        <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/main.min.css')}" />
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <!-- TWBS: minified CSS -->
@@ -14,8 +14,13 @@
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <!-- TWBS: minified JavaScript -->
         <script src="{f:uri.resource(path: 'bower_components/bootstrap/dist/js/bootstrap.min.js')}"></script>
-        <f:render section="Styles" />
-        <f:render section="HeaderJS" />
+
+        <f:if condition="{mode} == 2">
+            <!-- Vegas CSS -->
+            <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.css')}">
+            <!-- Vegas JS -->
+            <script src="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.js')}"></script>
+        </f:if>
     </head>
     <f:render section="Body" />
 </html>

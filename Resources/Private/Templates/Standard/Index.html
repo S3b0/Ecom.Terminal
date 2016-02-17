@@ -3,20 +3,6 @@
 
 <f:section name="Title">ecom Terminal</f:section>
 
-<f:section name="Styles">
-    <f:if condition="{mode} == 2">
-        <!-- Vegas CSS -->
-        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.css')}">
-    </f:if>
-</f:section>
-
-<f:section name="HeaderJS">
-    <f:if condition="{mode} == 2">
-        <!-- Vegas JS -->
-        <script src="{f:uri.resource(path: 'bower_components/vegas/dist/vegas.min.js')}"></script>
-    </f:if>
-</f:section>
-
 <f:section name="Body">
     <ecom:sanitizeOutput><body class="fullscreen"{bodyStyle -> f:format.raw()}>
         <f:if condition="{mode} == 1">
@@ -40,7 +26,8 @@
             <![CDATA[<script type="text/javascript">
                 $(function() {
                     $('body').vegas({
-                        delay: 6000,
+                        delay: 180000,
+                        transitionDuration: 0,
                         slides: ]]>{vegasSlidesJs}<![CDATA[
                     });
                 });

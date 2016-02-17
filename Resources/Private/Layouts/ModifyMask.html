@@ -5,7 +5,7 @@
         <title><f:render section="Title" /></title>
         <f:base />
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/main.css')}" />
+        <link rel="stylesheet" href="{f:uri.resource(path: 'Styles/main.min.css')}" />
         <!-- Font Awesome -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <!-- TWBS: minified CSS -->
@@ -14,6 +14,9 @@
         <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css')}" />
         <!-- ColorPicker CSS -->
         <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}" />
+        <!-- Parsley CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/parsleyjs/src/parsley.css')}" />
+
         <!-- jQuery -->
         <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
         <!-- TWBS: minified JavaScript -->
@@ -25,6 +28,8 @@
         <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js')}"></script>
         <!-- ColorPicker JS -->
         <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}"></script>
+        <!-- Parsley JS -->
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/parsleyjs/dist/parsley.min.js')}"></script>
     </head>
     <body>
         <f:security.ifAuthenticated>
@@ -93,7 +98,7 @@
                     pattern = pattern.replace(regex, replace);
                     pattern = pattern.replace('js-delete-participant-' + (counter - 1), 'js-delete-participant-' + counter);
                     $('#participants').append('<div id="participant-' + counter + '">' + pattern + '</div>');
-                    $('#js-delete-participant-' + counter).on('click', function() {
+                    $('.js-delete-participant').on('click', function() {
                         $(this).parent().remove();
                     });
                     counter++;

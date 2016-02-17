@@ -213,3 +213,22 @@ img#handshake {
 .colorpicker::before {
 	display: none !important;
 }
+
+.vegas-timer {
+	display: none;
+}
+
+.parsley-errors-list {
+	background-color: #f2dede;
+	border: 1px solid #eed3d7;
+	border-top-width: 0;
+	color: #b94a48;
+	font-weight: 900;
+	padding: 10px !important;
+	position: relative;
+	top: -2px;
+}
+
+input.parsley-error, select.parsley-error, textarea.parsley-error {
+	background-color: transparent !important;
+}
