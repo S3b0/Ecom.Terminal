@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+    <file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-02-12T09:38:47Z" product-name="Ecom.Terminal">
+        <header/>
+        <body>
+            <trans-unit id="fm.loginSuccess.title" xml:space="preserve">
+                <source>Login successful</source>
+                <target>Login erfolgreich</target>
+            </trans-unit>
+            <trans-unit id="fm.loginSuccess.message" xml:space="preserve">
+                <source>You have successfully logged in.</source>
+                <target>Sie haben sich erfolgreich angemeldet.</target>
+            </trans-unit>
+            <trans-unit id="fm.authenticationFailed.title" xml:space="preserve">
+                <source>Authentication failed</source>
+                <target>Authentifizierung fehlgeschlagen</target>
+            </trans-unit>
+            <trans-unit id="fm.logoutSuccess.title" xml:space="preserve">
+                <source>Logout successful</source>
+                <target>Logout erfolgreich</target>
+            </trans-unit>
+            <trans-unit id="fm.logoutSuccess.message" xml:space="preserve">
+                <source>You have successfully logged out.</source>
+                <target>Sie haben sich erfolgreich abgemeldet.</target>
+            </trans-unit>
+            <trans-unit id="fm.accountCreated.title" xml:space="preserve">
+                <source>Account {name} created</source>
+                <target>Der Account {name} wurde angelegt</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.tooShort.title" xml:space="preserve">
+                <source>Username too short</source>
+                <target>Benutzername zu kurz</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.tooShort.message" xml:space="preserve">
+                <source>Username must be at least {length} characters long.</source>
+                <target>Der Benutzername muss mindestens {length} Zeichen lang sein.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.invalidChars.title" xml:space="preserve">
+                <source>Invalid characters found in username</source>
+                <target>Ungültige Zeichen im Benutzernamen gefunden</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.invalidChars.message" xml:space="preserve">
+                <source>Username must contain alphanumeric characters, hyphens and underscores only.</source>
+                <target>Der Benutzername darf nur alphanumerische Zeichen, Binde- und Unterstriche enthalten.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.duplicate.title" xml:space="preserve">
+                <source>User '{identifier}' already exists</source>
+                <target>Benutzer '{identifier}' existiert</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.username.duplicate.message" xml:space="preserve">
+                <source>Please choose another username.</source>
+                <target>Bitte wählen Sie einen anderen Benutzernamen.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.failed.title" xml:space="preserve">
+                <source>Password validation failed</source>
+                <target>Passwort-Validierung fehlgeschlagen</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.tooShort.message" xml:space="preserve">
+                <source>Password must be at least {length} characters long.</source>
+                <target>Das Passwort muss mindestens {length} Zeichen lang sein.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.usernameSimilar.message" xml:space="preserve">
+                <source>The password is based on the username. Fail!</source>
+                <target>Das Passwort baut auf den Nutzernamen auf. Fail!</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.tooManyUCChars.message" xml:space="preserve">
+                <source>The password has too many upper case characters.</source>
+                <target>Das Passwort enthält zu viele Großbuchstaben.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.tooManyLCChars.message" xml:space="preserve">
+                <source>The password has too many lower case characters.</source>
+                <target>Das Passwort enthält zu viele Kleinbuchstaben.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.tooManyNumChars.message" xml:space="preserve">
+                <source>The password has too many numeric characters.</source>
+                <target>Das Passwort enthält zu viele Zahlen.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.tooManySpecChars.message" xml:space="preserve">
+                <source>The password has too many special characters.</source>
+                <target>Das Passwort enthält zu viele Sonderzeichen.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.dictBased.message" xml:space="preserve">
+                <source>The password is based on a dictionary word.</source>
+                <target>Das Passwort basiert auf einem Wort aus dem Wörterbuch.</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.dblCheckFailed.title" xml:space="preserve">
+                <source>Wrong password confirmation</source>
+                <target>Fehlerhafte Passwortbestätigung (-wiederholung)</target>
+            </trans-unit>
+            <trans-unit id="fm.validation.password.dblCheckFailed.message" xml:space="preserve">
+                <source>Entered passwords do not match.</source>
+                <target>Die eingegebenen Passwörter stimmen nicht überein.</target>
+            </trans-unit>
+        </body>
+    </file>
+</xliff>

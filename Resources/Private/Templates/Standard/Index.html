@@ -28,8 +28,8 @@
                 <f:if condition="{appointment.name}">
                     <h2 {inlineStyleColor -> f:format.raw()}>{appointment.name}</h2>
                 </f:if>
-                <f:if condition="{appointment.participants}">
-                    <f:for each="{appointment.participants}" as="participant">
+                <f:if condition="{participants}">
+                    <f:for each="{participants}" as="participant">
                         <p {inlineStyleColor -> f:format.raw()}><f:translate id="gender{participant.salutation}" /> {participant.name}</p>
                     </f:for>
                 </f:if>

@@ -15,6 +15,11 @@ class Appointment
 {
 
     /**
+     * @var boolean
+     */
+    protected $disabled = false;
+
+    /**
      * @var \DateTime
      */
     protected $starttime;
@@ -73,6 +78,44 @@ class Appointment
     public function _getIdentifier()
     {
         return $this->Persistence_Object_Identifier;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isDisabled()
+    {
+        return $this->disabled;
+    }
+
+    /**
+     * @param boolean $disabled
+     *
+     * @return Appointment
+     */
+    public function setDisabled($disabled)
+    {
+        $this->disabled = $disabled;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isEnabled()
+    {
+        return !$this->disabled;
+    }
+
+    /**
+     * @return Appointment
+     */
+    public function toggle()
+    {
+        $this->disabled = !$this->disabled;
+
+        return $this;
     }
 
     /**
@@ -240,7 +283,7 @@ class Appointment
      */
     public function hasParticipants()
     {
-        return $this->participants instanceof \Doctrine\Common\Collections\Collection && $this->participants->count();
+        return $this->participants instanceof \Countable && $this->participants->count();
     }
 
     /**

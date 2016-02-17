@@ -20,15 +20,23 @@ class AppointmentRepository extends Repository
     ];
 
     /**
+     * @param \DateTimeZone $dateTimeZone
+     * @param boolean       $includeDisabled
      * @return QueryResultInterface
      */
-    public function findActive()
+    public function findActive(\DateTimeZone $dateTimeZone, $includeDisabled = true)
     {
         $query = $this->createQuery();
 
-        return $query->matching(
-            $query->greaterThan('endtime', new \DateTime())
-        )->execute();
+        $constraint = $query->greaterThan('endtime', new \DateTime('now', $dateTimeZone));
+        if ($includeDisabled === false) {
+            $constraint = $query->logicalAnd([
+                $query->greaterThan('endtime', new \DateTime('now', $dateTimeZone)),
+                $query->equals('disabled', false)
+            ]);
+        }
+
+        return $query->matching($constraint)->execute();
     }
 
     /**
@@ -43,7 +51,8 @@ class AppointmentRepository extends Repository
         return $query->matching(
             $query->logicalAnd([
                 $query->lessThanOrEqual('starttime', $now),
-                $query->greaterThanOrEqual('endtime', $now)
+                $query->greaterThanOrEqual('endtime', $now),
+                $query->equals('disabled', false)
             ])
         )->execute();
     }
@@ -58,15 +67,23 @@ class AppointmentRepository extends Repository
     }
 
     /**
+     * @param \DateTimeZone $dateTimeZone
+     * @param boolean       $includeDisabled
      * @return QueryResultInterface
      */
-    public function findInactive()
+    public function findInactive(\DateTimeZone $dateTimeZone, $includeDisabled = true)
     {
         $query = $this->createQuery();
 
-        return $query->matching(
-            $query->lessThanOrEqual('endtime', new \DateTime())
-        )->execute();
+        $constraint = $query->lessThanOrEqual('endtime', new \DateTime('now', $dateTimeZone));
+        if ($includeDisabled === false) {
+            $constraint = $query->logicalAnd([
+                $query->lessThanOrEqual('endtime', new \DateTime('now', $dateTimeZone)),
+                $query->equals('disabled', false)
+            ]);
+        }
+
+        return $query->matching($constraint)->execute();
     }
 
 }

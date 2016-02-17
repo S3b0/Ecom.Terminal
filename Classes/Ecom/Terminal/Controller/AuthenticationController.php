@@ -29,6 +29,12 @@ class AuthenticationController extends AbstractAuthenticationController
     protected $accountRepository;
 
     /**
+     * @Flow\Inject
+     * @var \TYPO3\Flow\I18n\Translator
+     */
+    protected $translator;
+
+    /**
      * @var \TYPO3\Flow\I18n\Locale
      */
     protected $lang;
@@ -60,7 +66,7 @@ class AuthenticationController extends AbstractAuthenticationController
      */
     protected function onAuthenticationSuccess(ActionRequest $originalRequest = null)
     {
-        $this->addFlashMessage('Login successful');
+        $this->addFlashMessage($this->translate('fm.loginSuccess.message'), $this->translate('fm.loginSuccess.title'));
         if ($originalRequest !== null) {
             $this->redirectToRequest($originalRequest);
         }
@@ -69,7 +75,7 @@ class AuthenticationController extends AbstractAuthenticationController
 
     protected function onAuthenticationFailure(\TYPO3\Flow\Security\Exception\AuthenticationRequiredException $exception = null)
     {
-        $this->addFlashMessage($exception->getMessage(), 'Authentication failed!', Msg::SEVERITY_ERROR, [], $exception->getCode());
+        $this->addFlashMessage($exception->getMessage(), $this->translate('fm.authenticationFailed.title'), Msg::SEVERITY_ERROR, [], $exception->getCode());
     }
 
     /**
@@ -80,7 +86,7 @@ class AuthenticationController extends AbstractAuthenticationController
     public function logoutAction()
     {
         parent::logoutAction();
-        $this->addFlashMessage('Logout successful');
+        $this->addFlashMessage($this->translate('fm.logoutSuccess.message'), $this->translate('fm.logoutSuccess.title'));
         $this->redirect('login');
     }
 
@@ -107,18 +113,18 @@ class AuthenticationController extends AbstractAuthenticationController
     public function createAction($identifier, $password, $passwordCheck, $role = 0)
     {
         if ($identifier === '' || strlen($identifier) < self::MIN_USERNAME_LENGTH) {
-            $this->addFlashMessage('Username must be at least ' . self::MIN_USERNAME_LENGTH . ' characters long.', 'Username too short', Msg::SEVERITY_WARNING);
+            $this->addFlashMessage($this->translate('fm.validation.username.tooShort.message', [ 'length' => self::MIN_USERNAME_LENGTH ]), $this->translate('fm.validation.username.tooShort.title'), Msg::SEVERITY_WARNING);
         } elseif (!preg_match('/^[a-z][a-z0-9-_]+$/i', $identifier)) {
-            $this->addFlashMessage('Username must contain alphanumeric characters, hyphens and underscores only.', 'Invalid characters found in username', Msg::SEVERITY_WARNING);
+            $this->addFlashMessage($this->translate('fm.validation.username.invalidChars.message'), $this->translate('fm.validation.username.invalidChars.title'), Msg::SEVERITY_WARNING);
         } elseif ($this->accountRepository->findActiveByAccountIdentifierAndAuthenticationProviderName($identifier, 'DefaultProvider') instanceof \TYPO3\Flow\Security\Account) {
-            $this->addFlashMessage('Please choose another username.', 'User already exists', Msg::SEVERITY_WARNING);
+            $this->addFlashMessage($this->translate('fm.validation.username.duplicate.message'), $this->translate('fm.validation.username.duplicate.title', [ 'identifier' => $identifier ]), Msg::SEVERITY_WARNING);
         } elseif ($errorMessage = $this->checkPassword($identifier, $password)) {
-            $this->addFlashMessage($errorMessage, 'Password validation failed', Msg::SEVERITY_WARNING);
+            $this->addFlashMessage($errorMessage, $this->translate('fm.validation.password.failed.title'), Msg::SEVERITY_WARNING);
         } elseif ($password !== $passwordCheck) {
-            $this->addFlashMessage('Passwords do not match', 'Wrong password confirmation', Msg::SEVERITY_WARNING);
+            $this->addFlashMessage($this->translate('fm.validation.password.dblCheckFailed.message'), $this->translate('fm.validation.password.dblCheckFailed.title'), Msg::SEVERITY_WARNING);
         } else {
             switch ($role) {
-                case 1:
+                case 5380:
                     $roles = ['Ecom.Terminal:Administrator'];
                     break;
                 default:
@@ -128,7 +134,7 @@ class AuthenticationController extends AbstractAuthenticationController
             $account = $this->accountFactory->createAccountWithPassword($identifier, $password, $roles);
             $this->accountRepository->add($account);
             // add a message and redirect to login form
-            $this->addFlashMessage('Account created. Please login.');
+            $this->addFlashMessage('', $this->translate('fm.accountCreated.title', [ 'name' => $identifier ]));
             $this->redirect('login');
         }
 
@@ -151,13 +157,13 @@ class AuthenticationController extends AbstractAuthenticationController
 
         // the password must be at least six characters
         if (strlen($password) < self::MIN_PASSWORD_LENGTH) {
-            return 'The password is too short.';
+            return $this->translate('fm.validation.password.tooShort.message', [ 'length' => self::MIN_PASSWORD_LENGTH ]);
         }
 
         // the password can't be the username (or reversed username)
         if (($lowercasePassword == $lc_user) || ($lowercasePassword == strrev($lc_user)) ||
             ($leetspeakPassword == $lc_user) || ($leetspeakPassword == strrev($lc_user))) {
-            return 'The password is based on the username.';
+            return $this->translate('fm.validation.password.usernameSimilar.message');
         }
 
         // count how many lowercase, uppercase, and digits are in the password
@@ -179,16 +185,16 @@ class AuthenticationController extends AbstractAuthenticationController
         // two different kinds
         $max = $j - 2;
         if ($uppercase > $max) {
-            return 'The password has too many upper case characters.';
+            return $this->translate('fm.validation.password.tooManyUCChars.message');
         }
         if ($lowercase > $max) {
-            return 'The password has too many lower case characters.';
+            return $this->translate('fm.validation.password.tooManyLCChars.message');
         }
         if ($numeric > $max) {
-            return 'The password has too many numeral characters.';
+            return $this->translate('fm.validation.password.tooManyNumChars.message');
         }
         if ($other > $max) {
-            return 'The password has too many special characters.';
+            return $this->translate('fm.validation.password.tooManySpecChars.message');
         }
 
         // the password must not contain a dictionary word
@@ -204,12 +210,23 @@ class AuthenticationController extends AbstractAuthenticationController
                 }
                 fclose($fileHandler);
                 if ($found) {
-                    return 'The password is based on a dictionary word.';
+                    return $this->translate('fm.validation.password.dictBased.message');
                 }
             }
         }
 
         return null;
+    }
+
+    /**
+     * @param string $id
+     * @param array  $arguments
+     *
+     * @return string
+     */
+    private function translate($id, array $arguments = [])
+    {
+        return $this->translator->translateById($id, $arguments, null, $this->lang, 'Auth', $this->request->getControllerPackageKey());
     }
 
 }

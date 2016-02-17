@@ -28,7 +28,7 @@
                         </thead>
                         <tbody>
                         <f:for each="{appointments}" as="appointment">
-                            <tr class="{f:if(condition: appointment.overdue, then: 'danger')}">
+                            <tr class="{f:if(condition: appointment.overdue, then: 'danger')}{f:if(condition: appointment.disabled, then: ' warning')}{f:if(condition: '{appointment} == {current}', then: ' info')}">
                                 <td>{appointment.name}</td>
                                 <td><i class="fa fa-calendar{f:if(condition: appointment.overdue, then: '-times')}-o fa-fw text-success"></i> {appointment.starttime -> f:format.date(format: settings.date.format.short)}</td>
                                 <td><i class="fa fa-calendar{f:if(condition: appointment.overdue, then: '-times')}-o fa-fw text-danger"></i> {appointment.endtime -> f:format.date(format: settings.date.format.short)}</td>
@@ -46,11 +46,15 @@
                                 <td>
                                     <f:link.action action="showAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.show')}"><i class="fa fa-eye fa-fw text-default"></i></f:link.action>
                                     <f:security.ifHasRole role="Administrator">
-                                        <f:link.action action="editAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.edit')}">
-                                            <i class="fa fa-pencil fa-fw text-default"></i>
-                                        </f:link.action>
                                         <f:if condition="{appointment.overdue} == 0">
-                                            <f:link.action action="deleteAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.delete')}" onclick="return confirm({f:translate(id: 'modal.delete.confirm')})">
+                                            <f:if condition="{appointment.disabled}">
+                                                <f:then><f:link.action action="toggleAppointment" controller="Administration" arguments="{appointment: appointment, t: tstamp}"><i class="fa fa-toggle-off fa-fw"></i></f:link.action></f:then>
+                                                <f:else><f:link.action action="toggleAppointment" controller="Administration" arguments="{appointment: appointment, t: tstamp}"><i class="fa fa-toggle-on fa-fw"></i></f:link.action></f:else>
+                                            </f:if>
+                                            <f:link.action action="editAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.edit')}">
+                                                <i class="fa fa-pencil fa-fw text-default"></i>
+                                            </f:link.action>
+                                            <f:link.action action="deleteAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.delete')}" onclick="return confirm('{f:translate(id: \"modal.delete.confirm\")}')">
                                                 <i class="fa fa-trash-o fa-fw text-danger"></i>
                                             </f:link.action>
                                         </f:if>
@@ -64,7 +68,7 @@
                 <f:else>
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        No appointments created yet.
+                        <f:translate id="noAppointments" />
                     </div>
                 </f:else>
             </f:if>
@@ -73,7 +77,9 @@
         <div class="row">
             <p>
                 <f:link.action action="newAppointment" controller="Administration" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> <f:translate id="appointment.new" /></f:link.action>
-                <f:link.action action="cleanup" controller="Administration" class="btn btn-danger" onclick="return confirm('{f:translate(id: \'modal.delete.confirm\')}')"><i class="fa fa-trash"></i> <f:translate id="cleanupDB" /></f:link.action>
+                <f:security.ifHasRole role="Administrator">
+                    <f:link.action action="cleanup" controller="Administration" class="btn btn-danger {f:if(condition: '{outdated} == 0', then: 'disabled')}" onclick="return confirm('{f:translate(id: \"modal.delete.confirm\")}')"><i class="fa fa-trash"></i> <f:translate id="cleanupDB" /></f:link.action>
+                </f:security.ifHasRole>
             </p>
             <hr />
             <h3><f:translate id="slides" /></h3>
@@ -96,8 +102,9 @@
                     <small><f:format.nl2br><f:translate id="adm.slides.description" /></f:format.nl2br></small>
                 </f:then>
             </f:if>
-            <hr />
-            <p><f:link.action action="uploadSlides" class="btn btn-default"><i class="fa fa-slideshare fa-fw"></i> <f:translate id="slides.add" /></f:link.action></p>
+            <f:security.ifHasRole role="Administrator">
+                <hr /><p><f:link.action action="uploadSlides" class="btn btn-default"><i class="fa fa-slideshare fa-fw"></i> <f:translate id="slides.add" /></f:link.action></p>
+            </f:security.ifHasRole>
         </div>
     </div>
 

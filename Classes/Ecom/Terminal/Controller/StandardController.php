@@ -18,6 +18,12 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
 
     /**
      * @Flow\Inject
+     * @var \Ecom\Terminal\Domain\Repository\ParticipantRepository
+     */
+    protected $participantRepository;
+
+    /**
+     * @Flow\Inject
      * @var \TYPO3\Flow\Resource\ResourceManager
      */
     protected $resourceManager;
@@ -77,8 +83,9 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
                 $this->view->assign('bodyStyle', " style=\"background: #000 url({$this->resourceManager->getPublicPackageResourceUri('Ecom.Terminal', 'Images/glow.jpg')}) no-repeat center fixed\"");
             }
             $this->view->assignMultiple([
-                'appointment' => $appointment,
-                'mode'        => 1
+                'appointment'  => $appointment,
+                'participants' => $this->participantRepository->findByAppointment($appointment),
+                'mode'         => 1
             ]);
         }
     }

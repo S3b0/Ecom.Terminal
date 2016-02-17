@@ -17,6 +17,11 @@ class Participant
     /**
      * @var integer
      */
+    protected $sorting = 0;
+
+    /**
+     * @var integer
+     */
     protected $salutation;
 
     /**
@@ -37,12 +42,30 @@ class Participant
      *
      * @param array       $data
      * @param Appointment $appointment
+     * @param integer     $sorting
      */
-    public function __construct(array $data, Appointment $appointment)
+    public function __construct(array $data, Appointment $appointment, $sorting = 0)
     {
+        $this->sorting = $sorting;
         $this->salutation = $data[ 'salutation' ];
         $this->name = $data[ 'name' ];
         $this->appointment = $appointment;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getSorting()
+    {
+        return $this->sorting;
+    }
+
+    /**
+     * @param integer $sorting
+     */
+    public function setSorting($sorting)
+    {
+        $this->sorting = $sorting;
     }
 
     /**

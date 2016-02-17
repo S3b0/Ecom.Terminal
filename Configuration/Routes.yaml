@@ -76,6 +76,20 @@
 
 -
   name: 'Appointments object'
+  uriPattern: 'admin/{appointment}/toggle/{t}'
+  defaults:
+    '@package':    'Ecom.Terminal'
+    '@controller': 'Administration'
+    '@action':     'toggleAppointment'
+    '@format':     'html'
+  appendExceedingArguments: true
+  routeParts:
+    appointment:
+      objectType: 'Ecom\Terminal\Domain\Model\Appointment'
+      uriPattern: '{name}'
+
+-
+  name: 'Appointments object'
   uriPattern: 'admin/({appointment}/){@action}'
   defaults:
     '@package':    'Ecom.Terminal'
@@ -92,15 +106,3 @@
   defaults:
     '@package': 'Ecom.Terminal'
   appendExceedingArguments: true
-
-##
-# Fallback route
-
--
-  name: 'Terminal Root'
-  uriPattern: ''
-  defaults:
-    '@package':    'Ecom.Terminal'
-    '@controller': 'Standard'
-    '@action':     'index'
-    '@format':     'html'

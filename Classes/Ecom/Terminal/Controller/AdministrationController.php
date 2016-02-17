@@ -20,12 +20,6 @@ class AdministrationController extends StandardController
 
     /**
      * @Flow\Inject
-     * @var \Ecom\Terminal\Domain\Repository\ParticipantRepository
-     */
-    protected $participantRepository;
-
-    /**
-     * @Flow\Inject
      * @var \TYPO3\Flow\Resource\ResourceRepository
      */
     protected $resourceRepository;
@@ -58,14 +52,22 @@ class AdministrationController extends StandardController
      */
     public function indexAction()
     {
+        $appointments = $this->appointmentRepository->findAll();
+        $this->orderParticipants($appointments);
+        $outdated = $this->appointmentRepository->findInactive(new \DateTimeZone($this->settings[ 'date' ][ 'timezone' ]));
+        $outdated = $outdated instanceof \Countable ? $outdated->count() : 0;
+
         $this->view->assignMultiple([
-            'appointments' => $this->appointmentRepository->findAll(),
-            'slides'       => $this->getSlideResources()
+            'appointments' => $appointments,
+            'current'      => $this->appointmentRepository->findCurrentAppointment(new \DateTimeZone($this->settings[ 'date' ][ 'timezone' ])),
+            'outdated'     => $outdated,
+            'slides'       => $this->getSlideResources(),
+            'tstamp'       => time()
         ]);
     }
 
     /**
-     * @param \Ecom\Terminal\Domain\Model\Appointment $appointment
+     * @param Appointment $appointment
      * @return void
      */
     public function showAppointmentAction(Appointment $appointment)
@@ -92,22 +94,24 @@ class AdministrationController extends StandardController
     }
 
     /**
-     * @param \Ecom\Terminal\Domain\Model\Appointment $newAppointment
-     * @param array                                   $participants
+     * @param Appointment $newAppointment
+     * @param array       $participants
      * @return void
      */
     public function createAppointmentAction(Appointment $newAppointment, array $participants = [])
     {
         $this->appointmentRepository->add($newAppointment);
         if (sizeof($participants)) {
+            $sorting = 0;
             foreach ($participants as $participant) {
-                $newParticipant = new Participant($participant, $newAppointment);
+                $newParticipant = new Participant($participant, $newAppointment, $sorting);
                 $this->participantRepository->add($newParticipant);
                 $this->persistenceManager->whitelistObject($newParticipant);
+                $sorting++;
             }
         }
         $this->addFlashMessage($this->translate('fm.appointmentCreated'));
-        $this->redirect('index');
+        $this->redirect();
     }
 
     /**
@@ -125,47 +129,75 @@ class AdministrationController extends StandardController
     public function initializeUpdateAppointmentAction()
     {
         $temp = $this->request->getArgument('appointment');
-        $temp['starttime'] = date('Y-m-d\TH:i:sP', strtotime($temp['starttime']));
-        $temp['endtime'] = date('Y-m-d\TH:i:sP', strtotime($temp['endtime']));
-        $this->request->setArgument('appointment', $temp);
+        if (array_key_exists('starttime', $temp) && array_key_exists('endtime', $temp)) {
+            $temp['starttime'] = date('Y-m-d\TH:i:sP', strtotime($temp['starttime']));
+            $temp['endtime'] = date('Y-m-d\TH:i:sP', strtotime($temp['endtime']));
+            $this->request->setArgument('appointment', $temp);
+        }
     }
 
     /**
-     * @param \Ecom\Terminal\Domain\Model\Appointment $appointment
-     * @param array                                   $participants
+     * @param Appointment $appointment
+     * @param array       $participants
+     * @param boolean     $deleteImage
      * @return void
      */
-    public function updateAppointmentAction(Appointment $appointment, array $participants = [])
+    public function updateAppointmentAction(Appointment $appointment, array $participants = [], $deleteImage = false)
     {
-        $this->appointmentRepository->update($appointment);
+        if ($deleteImage) {
+            $appointment->setImage();
+        }
         if (sizeof($participants)) {
-            $currentAmmountOfParticipants = $appointment->getParticipants() instanceof \Countable ? $appointment->getParticipants()->count() : 0;
+            $currentAmountOfParticipants = $appointment->getParticipants() instanceof \Countable ? $appointment->getParticipants()->count() : 0;
+            $keepExistingParticipants = 0;
             $keepParticipants = [];
-            $keepExisitingParticipants = 0;
+            $sorting = 0;
             foreach ($participants as $participant) {
-                if ($appointment->participantExists($participant) || ($participant['salutation'] === '' && $participant['name'] === '')) {
-                    $keepParticipants[] = $appointment->getParticipant($participant);
-                    $keepExisitingParticipants++;
+                if ($participant['salutation'] === '' && $participant['name'] === '') {
                     continue;
                 }
-                $newParticipant = new Participant($participant, $appointment);
+                if ($appointment->participantExists($participant)) {
+                    $participant = $appointment->getParticipant($participant);
+                    $participant->setSorting($sorting);
+                    $keepParticipants[] = $participant;
+                    $keepExistingParticipants++;
+                    $sorting++;
+                    continue;
+                }
+                $newParticipant = new Participant($participant, $appointment, $sorting);
                 $this->participantRepository->add($newParticipant);
                 $this->persistenceManager->whitelistObject($newParticipant);
                 $keepParticipants[] = $newParticipant;
+                $sorting++;
             }
-            if ($currentAmmountOfParticipants > $keepExisitingParticipants) {
-                /** @var \Ecom\Terminal\Domain\Model\Participant $participant */
+            if ($currentAmountOfParticipants > $keepExistingParticipants) {
+                /** @var Participant $participant */
                 foreach ($appointment->getParticipants() as $participant) {
                     if (in_array($participant, $keepParticipants)) {
                         continue;
                     }
-                    #$this->persistenceManager->whitelistObject($participant);
                     $appointment->removeParticipant($participant);
                 }
             }
         }
+        $this->appointmentRepository->update($appointment);
         $this->addFlashMessage($this->translate('fm.appointmentUpdated', [ $appointment->getName() ]));
-        $this->redirect('index');
+        $this->redirect();
+    }
+
+    /**
+     * @param Appointment $appointment
+     * @param int         $t           Timestamp >> Prevent browser from caching
+     *
+     * @throws \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
+     */
+    public function toggleAppointmentAction(Appointment $appointment, $t = 0)
+    {
+        $appointment->toggle();
+        $this->appointmentRepository->update($appointment);
+        $this->persistenceManager->whitelistObject($appointment);
+        $this->persistenceManager->persistAll(true);
+        $this->redirect();
     }
 
     /**
@@ -183,22 +215,8 @@ class AdministrationController extends StandardController
             }
         }
         $this->appointmentRepository->remove($appointment);
-        $this->addFlashMessage('', $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_WARNING);
-        $this->redirect('index');
-    }
-
-    /**
-     * @param Appointment $appointment
-     *
-     * @throws \TYPO3\Flow\Persistence\Exception\IllegalObjectTypeException
-     */
-    public function deleteImageAction(Appointment $appointment)
-    {
-        $appointment->setImage();
-        $this->persistenceManager->whitelistObject($appointment);
-        $this->appointmentRepository->update($appointment);
-        $this->addFlashMessage('', $this->translate('fm.imageRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
-        $this->redirect('index');
+        $this->addFlashMessage('', $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
+        $this->redirect();
     }
 
     /**
@@ -206,7 +224,7 @@ class AdministrationController extends StandardController
      */
     public function cleanupAction()
     {
-        $appointments = $this->appointmentRepository->findInactive();
+        $appointments = $this->appointmentRepository->findInactive(new \DateTimeZone($this->settings[ 'date' ][ 'timezone' ]));
         if ($appointments->count()) {
             /** @var Appointment $appointment */
             foreach ($appointments as $appointment) {
@@ -218,12 +236,12 @@ class AdministrationController extends StandardController
                     }
                 }
                 $this->appointmentRepository->remove($appointment);
-                $this->addFlashMessage($this->translate('fm.appointmentRemoved.message', [ $appointment->getEndtime()->format($this->settings['date']['format']['long']) ]), $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_WARNING);
+                $this->addFlashMessage($this->translate('fm.odAppointmentRemoved.message', [ $appointment->getEndtime()->format($this->settings['date']['format']['long']) ]), $this->translate('fm.odAppointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
             }
         } else {
             $this->addFlashMessage($this->translate('fm.noActionNeeded'));
         }
-        $this->redirect('index');
+        $this->redirect();
     }
 
     /**
@@ -258,7 +276,7 @@ class AdministrationController extends StandardController
             }
             $collection->publish();
         }
-        $this->redirect('index');
+        $this->redirect();
     }
 
     /**
@@ -278,6 +296,50 @@ class AdministrationController extends StandardController
             $this->addFlashMessage($this->translate('fm.slideNotFound'), '', Message::SEVERITY_WARNING);
         }
 
-        $this->redirect('index');
+        $this->redirect();
     }
+
+    /**
+     * @param \TYPO3\Flow\Persistence\QueryResultInterface|null $appointments
+     */
+    private function orderParticipants($appointments = null)
+    {
+        if (!$appointments instanceof \Countable || $appointments->count() === 0) {
+            return;
+        }
+
+        /** @var Appointment $appointment */
+        foreach ($appointments as $appointment) {
+            if ($appointment->hasParticipants() && $appointment->getParticipants()->count() > 1) {
+                $finalOrder = [];
+                /** @var Participant $participant */
+                foreach ($appointment->getParticipants() as $participant) {
+                    $finalOrder[$participant->getSorting()] = $participant;
+                }
+                ksort($finalOrder);
+                $appointment->setParticipants(new \Doctrine\Common\Collections\ArrayCollection($finalOrder));
+            }
+        }
+    }
+
+    /**
+     * Redirects the request to another action and / or controller.
+     *
+     * Redirect will be sent to the client which then performs another request to the new URI.
+     *
+     * @param string $actionName Name of the action to forward to
+     * @param string $controllerName Unqualified object name of the controller to forward to. If not specified, the current controller is used.
+     * @param string $packageKey Key of the package containing the controller to forward to. If not specified, the current package is assumed.
+     * @param array $arguments Array of arguments for the target action
+     * @param integer $delay (optional) The delay in seconds. Default is no delay.
+     * @param integer $statusCode (optional) The HTTP status code for the redirect. Default is "303 See Other"
+     * @param string $format The format to use for the redirect URI
+     * @return void
+     * @throws \TYPO3\Flow\Mvc\Exception\StopActionException
+     */
+    protected function redirect($actionName = 'index', $controllerName = null, $packageKey = null, array $arguments = null, $delay = 0, $statusCode = 301, $format = null)
+    {
+        parent::redirect($actionName, $controllerName, $packageKey, $arguments, $delay, $statusCode, $format);
+    }
+
 }

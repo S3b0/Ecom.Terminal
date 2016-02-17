@@ -4,6 +4,10 @@
         <header/>
         <body>
             <!-- GENERIC -->
+            <trans-unit id="noAppointments" xml:space="preserve">
+                <source>No appointments created yet.</source>
+                <target>Es liegen noch keine Termine vor.</target>
+            </trans-unit>
             <trans-unit id="terminal" xml:space="preserve">
                 <source>Terminal</source>
                 <target>Terminal</target>
@@ -83,10 +87,14 @@
                 <target>Der Termin '{0}' wurde aktualisiert.</target>
             </trans-unit>
             <trans-unit id="fm.appointmentRemoved.title" xml:space="preserve">
+                <source>Appointment '{0}' was removed!</source>
+                <target>Der Termin '{0}' wurde gelöscht!</target>
+            </trans-unit>
+            <trans-unit id="fm.odAppointmentRemoved.title" xml:space="preserve">
                 <source>Outdated appointment '{0}' was removed!</source>
                 <target>Der abgelaufene Termin '{0}' wurde gelöscht!</target>
             </trans-unit>
-            <trans-unit id="fm.appointmentRemoved.message" xml:space="preserve">
+            <trans-unit id="fm.odAppointmentRemoved.message" xml:space="preserve">
                 <source>The appointment has expired on {0}.</source>
                 <target>Der Termin ist am {0} abgelaufen.</target>
             </trans-unit>
@@ -271,6 +279,11 @@ Dias werden nach Dateinamen sortiert. Fahren Sie mit der Maus über die Vorschau
             <trans-unit id="title.slide.delete" xml:space="preserve">
                 <source>Remove slide</source>
                 <target>Slide entfernen</target>
+            </trans-unit>
+
+            <trans-unit id="modal.delete.confirm" xml:space="preserve">
+                <source>Are you sure?</source>
+                <target>Bischd\' sicher?</target>
             </trans-unit>
         </body>
     </file>

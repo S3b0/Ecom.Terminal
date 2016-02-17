@@ -17,6 +17,13 @@ class ParticipantRepository extends Repository
 {
 
     /**
+     * @var array
+     */
+    protected $defaultOrderings = [
+        'sorting' => \TYPO3\Flow\Persistence\QueryInterface::ORDER_ASCENDING
+    ];
+
+    /**
      * @param Appointment $appointment
      * @return QueryResultInterface
      */
