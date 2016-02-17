@@ -86,7 +86,7 @@
   routeParts:
     appointment:
       objectType: 'Ecom\Terminal\Domain\Model\Appointment'
-      uriPattern: '{name}'
+      uriPattern: '{title}'
 
 -
   name: 'Appointments object'
@@ -98,7 +98,7 @@
   routeParts:
     appointment:
       objectType: 'Ecom\Terminal\Domain\Model\Appointment'
-      uriPattern: '{name}'
+      uriPattern: '{title}'
 
 -
   name: 'default'

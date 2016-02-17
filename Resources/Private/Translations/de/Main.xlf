@@ -44,6 +44,10 @@
                 <source>Title</source>
                 <target>Titel</target>
             </trans-unit>
+            <trans-unit id="hiddenTitle" xml:space="preserve">
+                <source>Title hidden</source>
+                <target>Titel verborgen</target>
+            </trans-unit>
             <trans-unit id="participants" xml:space="preserve">
                 <source>Participants</source>
                 <target>Teilnehmer</target>
@@ -197,6 +201,10 @@ Dias werden nach Dateinamen sortiert. Fahren Sie mit der Maus über die Vorschau
             <trans-unit id="form.title.placeholder" xml:space="preserve">
                 <source>Enter some title</source>
                 <target>Geben Sie einen Titel an</target>
+            </trans-unit>
+            <trans-unit id="form.hideTitle" xml:space="preserve">
+                <source>Hide title</source>
+                <target>Titel verbergen</target>
             </trans-unit>
             <trans-unit id="form.starttime" xml:space="preserve">
                 <source>Starting</source>

@@ -12,8 +12,11 @@
         <div class="row">
             <f:form action="updateAppointment" objectName="appointment" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="name"><f:translate id="title" /></label>
-                    <f:form.textfield property="name" class="form-control" id="name" value="{appointment.name}" placeholder="{f:translate(id: 'form.title.placeholder')}" />
+                    <label for="title"><f:translate id="title" /></label>
+                    <f:form.textfield property="title" class="form-control" id="title" value="{appointment.title}" placeholder="{f:translate(id: 'form.title.placeholder')}" />
+                </div>
+                <div class="form-group">
+                    <f:form.checkbox property="hideTitle" id="hideTitle" value="1" checked="{appointment.hideTitle}" /> <label for="hideTitle" style="font-weight: normal"><f:translate id="form.hideTitle" /></label>
                 </div>
                 <div class="row">
                     <div class='col-md-6'>

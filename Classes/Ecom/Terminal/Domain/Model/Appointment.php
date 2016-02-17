@@ -35,7 +35,12 @@ class Appointment
      * @ORM\Column(length=80)
      * @var string
      */
-    protected $name;
+    protected $title;
+
+    /**
+     * @var boolean
+     */
+    protected $hideTitle = false;
 
     /**
      * @ORM\Column(length=2)
@@ -161,21 +166,37 @@ class Appointment
     /**
      * @return string
      */
-    public function getName()
+    public function getTitle()
     {
-        return $this->name;
+        return $this->title;
     }
 
     /**
-     * @param string $name
+     * @param string $title
      *
      * @return Appointment
      */
-    public function setName($name)
+    public function setTitle($title)
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isHideTitle()
+    {
+        return $this->hideTitle;
+    }
+
+    /**
+     * @param boolean $hideTitle
+     */
+    public function setHideTitle($hideTitle)
+    {
+        $this->hideTitle = $hideTitle;
     }
 
     /**

@@ -34,6 +34,9 @@
             <trans-unit id="title" xml:space="preserve">
                 <source>Title</source>
             </trans-unit>
+            <trans-unit id="hiddenTitle" xml:space="preserve">
+                <source>Title hidden</source>
+            </trans-unit>
             <trans-unit id="participants" xml:space="preserve">
                 <source>Participants</source>
             </trans-unit>
@@ -150,6 +153,9 @@ Slides are sorted by filename. Hover thumbnails to see filename as title.]]></so
             <!-- FORMS / FORM FIELDS -->
             <trans-unit id="form.title.placeholder" xml:space="preserve">
                 <source>Enter some title</source>
+            </trans-unit>
+            <trans-unit id="form.hideTitle" xml:space="preserve">
+                <source>Hide title</source>
             </trans-unit>
             <trans-unit id="form.starttime" xml:space="preserve">
                 <source>Starting</source>

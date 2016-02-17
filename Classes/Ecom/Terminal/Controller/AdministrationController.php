@@ -104,6 +104,9 @@ class AdministrationController extends StandardController
         if (sizeof($participants)) {
             $sorting = 0;
             foreach ($participants as $participant) {
+                if ($participant['salutation'] === '' && $participant['name'] === '') {
+                    continue;
+                }
                 $newParticipant = new Participant($participant, $newAppointment, $sorting);
                 $this->participantRepository->add($newParticipant);
                 $this->persistenceManager->whitelistObject($newParticipant);
@@ -181,7 +184,7 @@ class AdministrationController extends StandardController
             }
         }
         $this->appointmentRepository->update($appointment);
-        $this->addFlashMessage($this->translate('fm.appointmentUpdated', [ $appointment->getName() ]));
+        $this->addFlashMessage($this->translate('fm.appointmentUpdated', [ $appointment->getTitle() ]));
         $this->redirect();
     }
 
@@ -215,7 +218,7 @@ class AdministrationController extends StandardController
             }
         }
         $this->appointmentRepository->remove($appointment);
-        $this->addFlashMessage('', $this->translate('fm.appointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
+        $this->addFlashMessage('', $this->translate('fm.appointmentRemoved.title', [ $appointment->getTitle() ]), Message::SEVERITY_ERROR);
         $this->redirect();
     }
 
@@ -236,7 +239,7 @@ class AdministrationController extends StandardController
                     }
                 }
                 $this->appointmentRepository->remove($appointment);
-                $this->addFlashMessage($this->translate('fm.odAppointmentRemoved.message', [ $appointment->getEndtime()->format($this->settings['date']['format']['long']) ]), $this->translate('fm.odAppointmentRemoved.title', [ $appointment->getName() ]), Message::SEVERITY_ERROR);
+                $this->addFlashMessage($this->translate('fm.odAppointmentRemoved.message', [ $appointment->getEndtime()->format($this->settings['date']['format']['long']) ]), $this->translate('fm.odAppointmentRemoved.title', [ $appointment->getTitle() ]), Message::SEVERITY_ERROR);
             }
         } else {
             $this->addFlashMessage($this->translate('fm.noActionNeeded'));

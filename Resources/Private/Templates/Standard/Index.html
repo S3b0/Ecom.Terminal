@@ -25,8 +25,8 @@
             </header>
             <f:if condition="{appointment.image}"><hr class="appointment-user" style="border-color: {appointment.fontColor}" /></f:if>
             <section class="{f:if(condition: appointment.image, then: 'appointment-user', else: 'appointment-def')}">
-                <f:if condition="{appointment.name}">
-                    <h2 {inlineStyleColor -> f:format.raw()}>{appointment.name}</h2>
+                <f:if condition="{appointment.hideTitle} == 0">
+                    <h2 {inlineStyleColor -> f:format.raw()}>{appointment.title}</h2>
                 </f:if>
                 <f:if condition="{participants}">
                     <f:for each="{participants}" as="participant">
