@@ -1,10 +1,11 @@
 roles:
-  'Ecom.Terminal:Administrator':
-    privileges: []
-
   'Ecom.Terminal:User':
     privileges: []
 
-  'Ecom.Terminal:PrivilegedUser':
+  'Ecom.Terminal:Manager':
     parentRoles: ['Ecom.Terminal:User']
+    privileges: []
+
+  'Ecom.Terminal:Administrator':
+    parentRoles: ['Ecom.Terminal:Manager']
     privileges: []

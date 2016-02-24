@@ -83,8 +83,8 @@
         <div class="clearfix">&nbsp;</div>
         <div class="row">
             <p>
-                <f:link.action action="newAppointment" controller="Administration" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> <f:translate id="appointment.new" /></f:link.action>
-                <f:security.ifHasRole role="Administrator">
+                <f:security.ifHasRole role="Manager">
+                    <f:link.action action="newAppointment" controller="Administration" class="btn btn-primary"><i class="fa fa-calendar-plus-o fa-fw"></i> <f:translate id="appointment.new" /></f:link.action>
                     <f:link.action action="cleanup" controller="Administration" class="btn btn-danger {f:if(condition: '{outdated} == 0', then: 'disabled')}" onclick="return confirm('{f:translate(id: \"modal.delete.confirm\")}')"><i class="fa fa-trash"></i> <f:translate id="cleanupDB" /></f:link.action>
                 </f:security.ifHasRole>
             </p>
