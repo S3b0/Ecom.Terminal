@@ -99,21 +99,21 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
 
         if ($slides = $this->getSlideResources()) {
             $sources = [];
-            /** @var \TYPO3\Flow\Resource\Resource $slide */
-            foreach ($slides as $slide) {
-                $sources[] = "{ src: '{$this->resourceManager->getPublicPersistentResourceUri($slide)}' }";
-            }
             /** Add video, if available */
             if (is_dir(FLOW_PATH_WEB . '_Resources/Static/Video')) {
                 $directoryContent = array_diff(scandir(FLOW_PATH_WEB . '_Resources/Static/Video'), [ '.', '..' ]);
+                natsort($directoryContent);
                 if (sizeof($directoryContent)) {
                     foreach ($directoryContent as $file) {
                         if (preg_match('/\.mp4$/i', $file)) {
                             $sources[] = "{video:{src:['/_Resources/Static/Video/{$file}'],loop: false,mute: true}}";
-                            break;
                         }
                     }
                 }
+            }
+            /** @var \TYPO3\Flow\Resource\Resource $slide */
+            foreach ($slides as $slide) {
+                $sources[] = "{ src: '{$this->resourceManager->getPublicPersistentResourceUri($slide)}' }";
             }
             $vegasSlidesJs = '[' . implode(',', $sources) . ']';
         }
