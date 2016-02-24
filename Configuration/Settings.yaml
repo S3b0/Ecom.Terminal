@@ -25,6 +25,7 @@ TYPO3:
 
 Ecom:
   Terminal:
+    timeout: 180000
     fontColors:
       cccccc: 'light grey'
       ffffff: 'white'

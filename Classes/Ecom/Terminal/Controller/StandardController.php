@@ -103,6 +103,18 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
             foreach ($slides as $slide) {
                 $sources[] = "{ src: '{$this->resourceManager->getPublicPersistentResourceUri($slide)}' }";
             }
+            /** Add video, if available */
+            if (is_dir(FLOW_PATH_WEB . '_Resources/Static/Video')) {
+                $directoryContent = array_diff(scandir(FLOW_PATH_WEB . '_Resources/Static/Video'), [ '.', '..' ]);
+                if (sizeof($directoryContent)) {
+                    foreach ($directoryContent as $file) {
+                        if (preg_match('/\.mp4$/i', $file)) {
+                            $sources[] = "{video:{src:['/_Resources/Static/Video/{$file}'],loop: false,mute: true}}";
+                            break;
+                        }
+                    }
+                }
+            }
             $vegasSlidesJs = '[' . implode(',', $sources) . ']';
         }
 
