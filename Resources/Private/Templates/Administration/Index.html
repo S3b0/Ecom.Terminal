@@ -52,7 +52,7 @@
                                 </td>
                                 <td>
                                     <f:link.action action="showAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.show')}"><i class="fa fa-eye fa-fw text-default"></i></f:link.action>
-                                    <f:security.ifHasRole role="Administrator">
+                                    <f:security.ifHasRole role="Manager">
                                         <f:if condition="{appointment.overdue} == 0">
                                             <f:if condition="{appointment.disabled}">
                                                 <f:then><f:link.action action="toggleAppointment" controller="Administration" arguments="{appointment: appointment, t: tstamp}"><i class="fa fa-toggle-off fa-fw"></i></f:link.action></f:then>
