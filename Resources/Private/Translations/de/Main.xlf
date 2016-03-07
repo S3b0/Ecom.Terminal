@@ -57,8 +57,8 @@
                 <target>Bild</target>
             </trans-unit>
             <trans-unit id="gender0" xml:space="preserve">
-                <source></source>
-                <target></target>
+                <source> </source>
+                <target> </target>
             </trans-unit>
             <trans-unit id="gender1" xml:space="preserve">
                 <source>Mr.</source>
