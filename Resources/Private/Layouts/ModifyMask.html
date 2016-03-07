@@ -49,6 +49,12 @@
             </script>
         </f:security.ifAuthenticated>
         <script type="text/javascript">
+            function removeParticipantField(e) {
+                e.parent().parent().remove();
+                if ($('fieldset#participants > div').length === 0) {
+                    $('#freetext').parent().show();
+                }
+            }
             $(function() {
                 var jsTriggerST = $('#js-trigger-starttime'),
                     jsTriggerET = $('#js-trigger-endtime'),
@@ -91,20 +97,34 @@
                 });
 
                 var counter = $('.js-delete-participant').length,
-                    pattern = $('#new-participant').html();
-                $('#js-add-participant').on('click', function() {
-                    var regex   = new RegExp('participants\\\[' + (counter - 1) + '\\\]', 'igm'),
-                        replace = 'participants[' + counter + ']';
-                    pattern = pattern.replace(regex, replace);
-                    pattern = pattern.replace('js-delete-participant-' + (counter - 1), 'js-delete-participant-' + counter);
-                    $('#participants').append('<div id="participant-' + counter + '">' + pattern + '</div>');
-                    $('.js-delete-participant').on('click', function() {
-                        $(this).parent().remove();
-                    });
-                    counter++;
+                    pattern = $('#new-participant').html(),
+                    $freetext = $('#freetext').parent(),
+                    $participants = $('#participants'),
+                    $addParticipantBtn = $('#js-add-participant'),
+                    $remParticipantBtns = $('.js-delete-participant'),
+                    maxParticipants = 10;
+                $('#new-participant').remove();
+                $freetext.on('change', function() {
+                    $participants.toggle($(this).val() === '');
+                    $addParticipantBtn.toggle($(this).val() === '');
                 });
-                $('.js-delete-participant').on('click', function() {
-                    $(this).parent().remove();
+                $addParticipantBtn.on('click', function() {
+                    $('#freetext').val('').parent().hide();
+                    if ($('.js-delete-participant').length === maxParticipants) {
+                        alert('Maximum of ' + maxParticipants + ' participants reached!');
+                    } else {
+                        var regex   = new RegExp('participants\\\[' + (counter - 1) + '\\\]', 'igm'),
+                            replace = 'participants[' + counter + ']';
+                        pattern = pattern.replace(regex, replace);
+                        $('#participants').append('<div id="participant-' + counter + '">' + pattern + '</div>');
+                        $('.js-delete-participant').off('click').on('click', function() {
+                            removeParticipantField($(this));
+                        });
+                        counter++;
+                    }
+                });
+                $remParticipantBtns.on('click', function() {
+                    removeParticipantField($(this));
                 });
 
                 $('.colorpicker').colorpicker({

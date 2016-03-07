@@ -43,6 +43,12 @@ class Appointment
     protected $hideTitle = false;
 
     /**
+     * @ORM\Column(type="text")
+     * @var string
+     */
+    protected $freetext = '';
+
+    /**
      * @ORM\Column(length=2)
      * @var string
      */
@@ -197,6 +203,22 @@ class Appointment
     public function setHideTitle($hideTitle)
     {
         $this->hideTitle = $hideTitle;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFreetext()
+    {
+        return $this->freetext;
+    }
+
+    /**
+     * @param string $freetext
+     */
+    public function setFreetext($freetext)
+    {
+        $this->freetext = $freetext;
     }
 
     /**

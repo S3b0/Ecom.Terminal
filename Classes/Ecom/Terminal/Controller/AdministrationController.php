@@ -104,7 +104,7 @@ class AdministrationController extends StandardController
         if (sizeof($participants)) {
             $sorting = 0;
             foreach ($participants as $participant) {
-                if ($participant['salutation'] === '' && $participant['name'] === '') {
+                if ((int)$participant['salutation'] === 0 && $participant['name'] === '') {
                     continue;
                 }
                 $newParticipant = new Participant($participant, $newAppointment, $sorting);
@@ -156,12 +156,14 @@ class AdministrationController extends StandardController
             $keepParticipants = [];
             $sorting = 0;
             foreach ($participants as $participant) {
-                if ($participant['salutation'] === '' && $participant['name'] === '') {
+                if ((int)$participant['salutation'] === 0 && $participant['name'] === '') {
                     continue;
                 }
                 if ($appointment->participantExists($participant)) {
+                    $title = (int)$participant['title'];
                     $participant = $appointment->getParticipant($participant);
                     $participant->setSorting($sorting);
+                    $participant->setTitle($title); // Update title
                     $keepParticipants[] = $participant;
                     $keepExistingParticipants++;
                     $sorting++;

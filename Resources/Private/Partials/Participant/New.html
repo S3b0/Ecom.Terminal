@@ -1,0 +1,34 @@
+<div class="row" style="position:relative">
+	<div class="js-delete-participant" style="color:#f00;cursor:pointer;position:absolute;right:15px;z-index:1000" title="{f:translate(id: 'form.participant.remove')}"><i class="fa fa-user-times fa-fw"></i></div>
+	<div class="col-sm-2">
+		<div class="form-group">
+			<label for="participantSalutation"><f:translate id="form.participant.salutation" /></label>
+			<f:form.select options="{settings.participants.salutations}"
+			               name="participants[{f:if(condition: index,then: index, else: '0')}][salutation]"
+			               class="form-control"
+			               id="participantSalutation"
+			               value="{participant.salutation}" />
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<div class="form-group">
+			<label for="participantTitle"><f:translate id="form.participant.title" /></label>
+			<f:form.select options="{settings.participants.titles}"
+			               name="participants[{f:if(condition: index,then: index, else: '0')}][title]"
+			               class="form-control"
+			               id="participantTitle"
+			               value="{participant.title}" />
+		</div>
+	</div>
+	<div class="col-sm-8">
+		<div class="form-group">
+			<label for="participantName"><f:translate id="name" /></label>
+			<f:form.textfield name="participants[{f:if(condition: index,then: index, else: '0')}][name]"
+			                  class="form-control"
+			                  id="participantName"
+			                  placeholder="{f:translate(id: 'form.participant.name.placeholder')}"
+			                  required="required"
+			                  value="{participant.name}" />
+		</div>
+	</div>
+</div>

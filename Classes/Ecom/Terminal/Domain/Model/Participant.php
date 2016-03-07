@@ -22,7 +22,12 @@ class Participant
     /**
      * @var integer
      */
-    protected $salutation;
+    protected $salutation = 0;
+
+    /**
+     * @var integer
+     */
+    protected $title = 0;
 
     /**
      * @Flow\Validate(type="NotEmpty")
@@ -47,7 +52,8 @@ class Participant
     public function __construct(array $data, Appointment $appointment, $sorting = 0)
     {
         $this->sorting = $sorting;
-        $this->salutation = $data[ 'salutation' ];
+        $this->salutation = (int)$data[ 'salutation' ];
+        $this->title = (int)$data[ 'title' ];
         $this->name = $data[ 'name' ];
         $this->appointment = $appointment;
     }
@@ -84,6 +90,22 @@ class Participant
     public function setSalutation($salutation)
     {
         $this->salutation = $salutation;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param integer $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
     }
 
     /**

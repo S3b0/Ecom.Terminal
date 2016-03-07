@@ -1,3 +1,4 @@
+{namespace ecom=S3b0\ViewHelperCollection\ViewHelpers}
 <f:layout name="Default" />
 
 <f:section name="Title"><f:translate id="adm.title" /></f:section>
@@ -15,7 +16,7 @@
         <div class="row">
             <f:if condition="{appointments -> f:count()}">
                 <f:then>
-                    <table class="table table-striped table-hover">
+                    <table class="table table-striped table-hover table-condensed">
                         <thead>
                         <tr>
                             <th></th>
@@ -41,7 +42,9 @@
                                 <td><i class="fa fa-calendar{f:if(condition: appointment.overdue, then: '-times')}-o fa-fw text-danger"></i> {appointment.endtime -> f:format.date(format: settings.date.format.short)}</td>
                                 <td>
                                     <f:for each="{appointment.participants}" as="participant" iteration="iterator">
-                                        <f:translate id="gender{participant.salutation}" /> {participant.name}<f:if condition="{iterator.isLast} == 0">,</f:if>
+                                        <f:translate id="gender{participant.salutation}" />
+                                        <ecom:getArrayElement array="{settings.participants.titles}" key="{participant.title}" />
+                                        {participant.name}<f:if condition="{iterator.isLast} == 0"><br /></f:if>
                                     </f:for>
                                 </td>
                                 <td>

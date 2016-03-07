@@ -43,17 +43,14 @@
             <trans-unit id="image" xml:space="preserve">
                 <source>Image</source>
             </trans-unit>
-            <trans-unit id="gender" xml:space="preserve">
-                <source>-</source>
-            </trans-unit>
             <trans-unit id="gender0" xml:space="preserve">
-                <source>Mr.</source>
+                <source></source>
             </trans-unit>
             <trans-unit id="gender1" xml:space="preserve">
-                <source>Ms.</source>
+                <source>Mr.</source>
             </trans-unit>
             <trans-unit id="gender2" xml:space="preserve">
-                <source>Mrs.</source>
+                <source>Ms.</source>
             </trans-unit>
             <trans-unit id="slides" xml:space="preserve">
                 <source>Slides</source>
@@ -165,6 +162,12 @@ Slides are sorted by filename. Hover thumbnails to see filename as title.]]></so
             </trans-unit>
             <trans-unit id="form.displayLanguage" xml:space="preserve">
                 <source>Language (Display)</source>
+            </trans-unit>
+            <trans-unit id="form.freetext" xml:space="preserve">
+                <source>Text</source>
+            </trans-unit>
+            <trans-unit id="form.freetext.placeholder" xml:space="preserve">
+                <source>Add some text, if required. Line breaks will apply as you set.</source>
             </trans-unit>
             <trans-unit id="form.fontColor" xml:space="preserve">
                 <source>Font color</source>

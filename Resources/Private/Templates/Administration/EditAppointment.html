@@ -52,6 +52,10 @@
                                    class="form-control"
                                    id="displayLanguage" />
                 </div>
+                <div class="form-group" style="{f:if(condition: appointment.participants, then: 'display:none')}">
+                    <label for="freetext"><f:translate id="form.freetext" /></label>
+                    <f:form.textarea property="freetext" class="form-control" id="freetext" rows="6" placeholder="{f:translate(id: 'form.freetext.placeholder')}" value="{appointment.freetext}" />
+                </div>
                 <div class="form-group">
                     <label for="fontColor"><f:translate id="form.fontColor" /></label>
                     <div class="input-group colorpicker">
@@ -80,59 +84,16 @@
                         <f:then>
                             <f:for each="{appointment.participants}" as="participant" iteration="iterator">
                                 <div id="participant-{iterator.index}">
-                                    <div id="js-delete-participant-{iterator.index}" class="js-delete-participant" style="color:#f00;cursor:pointer;float:right" title="{f:translate(id: 'form.participant.remove')}"><i class="fa fa-user-times fa-fw"></i></div>
-                                    <div class="form-group">
-                                        <label for="participantSalutation"><f:translate id="form.participant.salutation" /></label>
-                                        <f:form.select options="{0: 'Mr', 1: 'Ms', 2: 'Mrs'}"
-                                                       translate="{by: 'id', prefix: 'gender'}"
-                                                       prependOptionLabel="-"
-                                                       prependOptionValue=""
-                                                       value="{participant.salutation}"
-                                                       name="participants[{iterator.index}][salutation]"
-                                                       class="form-control"
-                                                       id="participantSalutation" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="participantName"><f:translate id="name" /></label>
-                                        <f:form.textfield name="participants[{iterator.index}][name]" class="form-control" id="participantName" value="{participant.name}" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
-                                    </div>
+                                    <f:render partial="Participant/New" arguments="{index: iterator.index, participant: participant}" />
                                 </div>
                             </f:for>
                             <div id="new-participant">
-                                <div id="js-delete-participant-{appointment.participants -> f:count()}" class="js-delete-participant" style="color:#f00;cursor:pointer;float:right" title="{f:translate(id: 'form.participant.remove')}"><i class="fa fa-user-times fa-fw"></i></div>
-                                <div class="form-group">
-                                    <label for="participantSalutation"><f:translate id="form.participant.salutation" /></label>
-                                    <f:form.select options="{0: 'Mr', 1: 'Ms', 2: 'Mrs'}"
-                                                   translate="{by: 'id', prefix: 'gender'}"
-                                                   prependOptionLabel="-"
-                                                   prependOptionValue=""
-                                                   name="participants[{appointment.participants -> f:count()}][salutation]"
-                                                   class="form-control"
-                                                   id="participantSalutation" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="participantName"><f:translate id="name" /></label>
-                                    <f:form.textfield name="participants[{appointment.participants -> f:count()}][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
-                                </div>
+                                <f:render partial="Participant/New" arguments="{index: '{appointment.participants -> f:count()}'}" />
                             </div>
                         </f:then>
                         <f:else>
                             <div id="new-participant">
-                                <div id="js-delete-participant-0" class="js-delete-participant" style="color:#f00;cursor:pointer;float:right" title="{f:translate(id: 'form.participant.remove')}"><i class="fa fa-user-times fa-fw"></i></div>
-                                <div class="form-group">
-                                    <label for="participantSalutation"><f:translate id="form.participant.salutation" /></label>
-                                    <f:form.select options="{0: 'Mr', 1: 'Ms', 2: 'Mrs'}"
-                                                   translate="{by: 'id', prefix: 'gender'}"
-                                                   prependOptionLabel="-"
-                                                   prependOptionValue=""
-                                                   name="participants[0][salutation]"
-                                                   class="form-control"
-                                                   id="participantSalutation" />
-                                </div>
-                                <div class="form-group">
-                                    <label for="participantName"><f:translate id="name" /></label>
-                                    <f:form.textfield name="participants[0][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
-                                </div>
+                                <f:render partial="Participant/New" />
                             </div>
                         </f:else>
                     </f:if>

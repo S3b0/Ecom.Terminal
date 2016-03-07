@@ -14,10 +14,21 @@
                 <f:if condition="{appointment.hideTitle} == 0">
                     <h2 {inlineStyleColor -> f:format.raw()}>{appointment.title}</h2>
                 </f:if>
-                <f:if condition="{participants}">
-                    <f:for each="{participants}" as="participant">
-                        <p {inlineStyleColor -> f:format.raw()}><f:translate id="gender{participant.salutation}" /> {participant.name}</p>
-                    </f:for>
+                <f:if condition="{appointment.freetext}">
+                    <f:then><p>{appointment.freetext -> f:format.nl2br()}</p></f:then>
+                    <f:else>
+                        <f:if condition="{participants}">
+                            <div class="{f:if(condition: '{participants -> f:count()} > 5', then: 'max-participants')}">
+                                <f:for each="{participants}" as="participant">
+                                    <p {inlineStyleColor -> f:format.raw()}>
+                                        <f:translate id="gender{participant.salutation}" />
+                                        <ecom:getArrayElement array="{settings.participants.titles}" key="{participant.title}" />
+                                        {participant.name}
+                                    </p>
+                                </f:for>
+                            </div>
+                        </f:if>
+                    </f:else>
                 </f:if>
             </section>
             <img src="_Resources/Static/Packages/Ecom.Terminal/Images/handshake.png" width="250" id="handshake" />

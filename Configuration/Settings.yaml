@@ -25,7 +25,27 @@ TYPO3:
 
 Ecom:
   Terminal:
+    version: '1.1.0rc'
     timeout: 180000
+    participants:
+      salutations:
+        0:
+        1: 'Mr.'
+        2: 'Mrs.'
+      titles:
+        0:
+        1: 'Prof.'
+        2: 'Prof. Dr.'
+        3: 'Dr.'
+        4: 'Dipl.-Ing.'
+        5: 'Dipl.-Ing. (FH)'
+        6: 'Dipl.-Ing. (DH)'
+        7: 'M.A.'
+        8: 'M.Sc.'
+        9: 'M.Eng.'
+        10: 'B.A.'
+        11: 'B.Sc.'
+        12: 'B.Eng.'
     fontColors:
       cccccc: 'light grey'
       ffffff: 'white'

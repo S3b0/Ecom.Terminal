@@ -142,7 +142,7 @@ header.appointment-def {
 header.appointment-def > h1,
 header.appointment-user > h1 {
 	font-family: "DIN Offc Light", "DIN Offc", "Roboto Condensed", Roboto, Helvetica, Arial, sans-serif;
-	font-size: 96px;
+	font-size: 72px;
 }
 
 header.appointment-def > h1 {
@@ -150,7 +150,7 @@ header.appointment-def > h1 {
 	color: #b1b3b4;
 	height: 299px;
 	margin-top: 0;
-	padding: 130px 50px 0;
+	padding: 125px 50px 0;
 }
 
 header.appointment-user > h1 {
@@ -160,8 +160,9 @@ header.appointment-user > h1 {
 
 section.appointment-def,
 section.appointment-user {
-	font-size: 60px;
-	line-height: 2;
+	font-size: 48px;
+	line-height: 1.5;
+	width: 80%;
 }
 
 section.appointment-def {
@@ -176,8 +177,8 @@ section.appointment-user {
 section.appointment-def > h2,
 section.appointment-user > h2 {
 	font-family: "DIN Offc", "Roboto Condensed", Roboto, Helvetica, Arial, sans-serif;
-	font-size: 72px;
-	margin-bottom: 50px;
+	font-size: 60px;
+	margin-bottom: 25px;
 }
 
 hr.appointment-user {
@@ -231,4 +232,10 @@ img#handshake {
 
 input.parsley-error, select.parsley-error, textarea.parsley-error {
 	background-color: transparent !important;
+}
+
+div.max-participants {
+	column-count: 2;
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
 }

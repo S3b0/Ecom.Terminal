@@ -56,21 +56,17 @@
                 <source>Image</source>
                 <target>Bild</target>
             </trans-unit>
-            <trans-unit id="gender" xml:space="preserve">
-                <source>-</source>
-                <target>-</target>
-            </trans-unit>
             <trans-unit id="gender0" xml:space="preserve">
+                <source></source>
+                <target></target>
+            </trans-unit>
+            <trans-unit id="gender1" xml:space="preserve">
                 <source>Mr.</source>
                 <target>Herr</target>
             </trans-unit>
-            <trans-unit id="gender1" xml:space="preserve">
+            <trans-unit id="gender2" xml:space="preserve">
                 <source>Ms.</source>
                 <target>Frau</target>
-            </trans-unit>
-            <trans-unit id="gender2" xml:space="preserve">
-                <source>Mrs.</source>
-                <target>Fräulein</target>
             </trans-unit>
             <trans-unit id="slides" xml:space="preserve">
                 <source>Slides</source>
@@ -217,6 +213,14 @@ Dias werden nach Dateinamen sortiert. Fahren Sie mit der Maus über die Vorschau
             <trans-unit id="form.displayLanguage" xml:space="preserve">
                 <source>Language (Display)</source>
                 <target>Sprache (Anzeige)</target>
+            </trans-unit>
+            <trans-unit id="form.freetext" xml:space="preserve">
+                <source>Text</source>
+                <target>Text</target>
+            </trans-unit>
+            <trans-unit id="form.freetext.placeholder" xml:space="preserve">
+                <source>Add some text, if required. Line breaks will apply as you set.</source>
+                <target>Füge, wenn benötigt, Text hinzu. Umbrüche erscheinen, wie gesetzt.</target>
             </trans-unit>
             <trans-unit id="form.fontColor" xml:space="preserve">
                 <source>Font color</source>

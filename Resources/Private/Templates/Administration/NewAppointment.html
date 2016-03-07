@@ -16,7 +16,7 @@
                     <f:form.textfield property="title" class="form-control" id="title" placeholder="{f:translate(id: 'form.title.placeholder')}" required="required" />
                 </div>
                 <div class="form-group">
-                    <f:form.checkbox property="hideTitle" id="hideTitle" value="1" /> <label for="hideTitle" style="font-weight: normal"><f:translate id="form.hideTitle" /></label>
+                    <f:form.checkbox property="hideTitle" id="hideTitle" value="1" checked="checked" /> <label for="hideTitle" style="font-weight: normal"><f:translate id="form.hideTitle" /></label>
                 </div>
                 <div class="row">
                     <div class='col-md-6'>
@@ -52,6 +52,10 @@
                                    id="displayLanguage" />
                 </div>
                 <div class="form-group">
+                    <label for="freetext"><f:translate id="form.freetext" /></label>
+                    <f:form.textarea property="freetext" class="form-control" id="freetext" rows="6" placeholder="{f:translate(id: 'form.freetext.placeholder')}" />
+                </div>
+                <div class="form-group">
                     <label for="fontColor"><f:translate id="form.fontColor" /></label>
                     <div class="input-group colorpicker">
                         <f:form.textfield property="fontColor" value="#000000" class="form-control" id="fontColor" />
@@ -68,18 +72,7 @@
                 <fieldset id="participants">
                     <legend><i class="fa fa-users fa-fw"></i> <f:translate id="participants" /></legend>
                     <div id="new-participant">
-                        <div class="js-delete-participant" style="color:#f00;cursor:pointer;float:right" title="{f:translate(id: 'form.participant.remove')}"><i class="fa fa-user-times fa-fw"></i></div>
-                        <div class="form-group">
-                            <label for="participantSalutation"><f:translate id="form.participant.salutation" /></label>
-                            <f:form.select options="{0: '{f:translate(id: \'gender0\')}', 1: '{f:translate(id: \'gender1\')}', 2: '{f:translate(id: \'gender2\')}'}"
-                                           name="participants[0][salutation]"
-                                           class="form-control"
-                                           id="participantSalutation" />
-                        </div>
-                        <div class="form-group">
-                            <label for="participantName"><f:translate id="name" /></label>
-                            <f:form.textfield name="participants[0][name]" class="form-control" id="participantName" placeholder="{f:translate(id: 'form.participant.name.placeholder')}" required="required" />
-                        </div>
+                        <f:render partial="Participant/New" />
                     </div>
                 </fieldset>
                 <div class="btn btn-info form-control" id="js-add-participant"><i class="fa fa-user-plus fa-fw"></i> <f:translate id="participant.add" /></div>
