@@ -160,8 +160,8 @@ header.appointment-user > h1 {
 
 section.appointment-def,
 section.appointment-user {
-	font-size: 48px;
-	line-height: 1.5;
+	font-size: 40px;
+	line-height: 1.25;
 	width: 80%;
 }
 
