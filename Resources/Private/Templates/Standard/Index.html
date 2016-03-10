@@ -18,7 +18,7 @@
                     <f:then><p>{appointment.freetext -> f:format.nl2br()}</p></f:then>
                     <f:else>
                         <f:if condition="{participants}">
-                            <div class="{f:if(condition: '{participants -> f:count()} > 5', then: 'max-participants')}">
+                            <div class="{f:if(condition: '{participants -> f:count()} > 7', then: 'max-participants')}">
                                 <f:for each="{participants}" as="participant">
                                     <p {inlineStyleColor -> f:format.raw()}>
                                         <f:translate id="gender{participant.salutation}" />
