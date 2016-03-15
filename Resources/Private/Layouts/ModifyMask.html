@@ -45,6 +45,7 @@
         <f:render section="Content" />
         <f:security.ifAuthenticated>
             <script type="text/javascript">
+                /** Sticky Navigation */
                 function f(){var e=$(window).scrollTop(),d=1,g=$("#user-panel");if(e>d){g.addClass("sticky").siblings().first().css("padding-top",54)}else{g.removeClass("sticky").siblings().first().css("padding-top",0)}}$(function(){$(window).scroll(f);f()});
             </script>
         </f:security.ifAuthenticated>
@@ -98,15 +99,17 @@
 
                 var counter = $('.js-delete-participant').length,
                     pattern = $('#new-participant').html(),
-                    $freetext = $('#freetext').parent(),
                     $participants = $('#participants'),
                     $addParticipantBtn = $('#js-add-participant'),
                     $remParticipantBtns = $('.js-delete-participant'),
                     maxParticipants = 14;
                 $('#new-participant').remove();
-                $freetext.on('change', function() {
+                $('#freetext').on('change', function() {
                     $participants.toggle($(this).val() === '');
                     $addParticipantBtn.toggle($(this).val() === '');
+                    if ($participants.css('display') === 'none') {
+                        $participants.children('div').remove();
+                    }
                 });
                 $addParticipantBtn.on('click', function() {
                     $('#freetext').val('').parent().hide();
