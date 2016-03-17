@@ -7,26 +7,26 @@
     <ecom:sanitizeOutput><body class="fullscreen"{bodyStyle -> f:format.raw()}>
         <f:if condition="{mode} == 1">
             <header class="{f:if(condition: appointment.image, then: 'appointment-user', else: 'appointment-def')}">
-                <h1 {inlineStyleColor -> f:format.raw()}><f:translate id="welcomeText" /></h1>
+                <h1 style="{inlineStyleColor}"><f:translate id="welcomeText" /></h1>
             </header>
             <f:if condition="{appointment.image}"><hr class="appointment-user" style="border-color: {appointment.fontColor}" /></f:if>
             <section class="{f:if(condition: appointment.image, then: 'appointment-user', else: 'appointment-def')}">
                 <f:if condition="{appointment.hideTitle} == 0">
-                    <h2 {inlineStyleColor -> f:format.raw()}>{appointment.title}</h2>
+                    <h2 style="{inlineStyleColor}">{appointment.title}</h2>
                 </f:if>
                 <f:if condition="{appointment.freetext}">
                     <f:then><p>{appointment.freetext -> f:format.nl2br()}</p></f:then>
                     <f:else>
                         <f:if condition="{participants}">
-                            <div class="{f:if(condition: '{participants -> f:count()} > 7', then: 'max-participants')}">
+                            <table class="table table-condensed" style="height:100%">
                                 <f:for each="{participants}" as="participant">
-                                    <p {inlineStyleColor -> f:format.raw()}>
+                                    <tr><td style="border-top:0;vertical-align:middle;{inlineStyleColor}">
                                         <f:translate id="gender{participant.salutation}" />
                                         <ecom:getArrayElement array="{settings.participants.titles}" key="{participant.title}" />
                                         {participant.name}
-                                    </p>
+                                    </td></tr>
                                 </f:for>
-                            </div>
+                            </table>
                         </f:if>
                     </f:else>
                 </f:if>

@@ -286,7 +286,7 @@ class Appointment
      */
     public function getParticipants()
     {
-        return $this->participants;
+        return $this->participants instanceof \Countable ? $this->participants : new \ArrayObject();
     }
 
     /**

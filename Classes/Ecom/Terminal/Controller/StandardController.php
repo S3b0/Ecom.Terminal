@@ -51,8 +51,8 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
     public function initializeAction()
     {
         $detector = new \TYPO3\Flow\I18n\Detector();
-        $this->lang = $detector->detectLocaleFromHttpHeader($_SERVER['HTTP_ACCEPT_LANGUAGE']);
-        $this->settings['i18n']['defaultLocale'] = $this->lang->getLanguage();
+        $this->lang = $detector->detectLocaleFromHttpHeader($_SERVER[ 'HTTP_ACCEPT_LANGUAGE' ]);
+        $this->settings[ 'i18n' ][ 'defaultLocale' ] = $this->lang->getLanguage();
         $this->languageService->getConfiguration()->setCurrentLocale($this->lang);
     }
 
@@ -76,15 +76,15 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
             }
             if ($appointment->getImage() instanceof \TYPO3\Flow\Resource\Resource) {
                 $this->view->assignMultiple([
-                    'bodyStyle'              => " style=\"background: transparent url({$this->resourceManager->getPublicPersistentResourceUri($appointment->getImage())}) no-repeat center fixed\"",
-                    'inlineStyleColor'       => " style=\"color: {$appointment->getFontColor()}\""
+                    'bodyStyle'        => " style=\"background: transparent url({$this->resourceManager->getPublicPersistentResourceUri($appointment->getImage())}) no-repeat center fixed\"",
+                    'inlineStyleColor' => "color:{$appointment->getFontColor()}"
                 ]);
             } else {
                 $this->view->assign('bodyStyle', " style=\"background: #000 url({$this->resourceManager->getPublicPackageResourceUri('Ecom.Terminal', 'Images/glow.jpg')}) no-repeat center fixed\"");
             }
             $this->view->assignMultiple([
                 'appointment'  => $appointment,
-                'participants' => $this->participantRepository->findByAppointment($appointment),
+                'participants' => $appointment->getParticipants(),
                 'mode'         => 1
             ]);
         }
@@ -101,7 +101,7 @@ class StandardController extends \TYPO3\Flow\Mvc\Controller\ActionController
             $sources = [];
             /** Add video, if available */
             if (is_dir(FLOW_PATH_WEB . '_Resources/Static/Video')) {
-                $directoryContent = array_diff(scandir(FLOW_PATH_WEB . '_Resources/Static/Video'), [ '.', '..' ]);
+                $directoryContent = array_diff(scandir(FLOW_PATH_WEB . '_Resources/Static/Video'), ['.', '..']);
                 natsort($directoryContent);
                 if (sizeof($directoryContent)) {
                     foreach ($directoryContent as $file) {

@@ -169,6 +169,12 @@ Slides are sorted by filename. Hover thumbnails to see filename as title.]]></so
             <trans-unit id="form.freetext.placeholder" xml:space="preserve">
                 <source>Add some text, if required. Line breaks will apply as you set.</source>
             </trans-unit>
+            <trans-unit id="charsLeft" xml:space="preserve">
+                <source>characters left</source>
+            </trans-unit>
+            <trans-unit id="linesLeft" xml:space="preserve">
+                <source>lines left</source>
+            </trans-unit>
             <trans-unit id="form.fontColor" xml:space="preserve">
                 <source>Font color</source>
             </trans-unit>
@@ -183,6 +189,9 @@ Slides are sorted by filename. Hover thumbnails to see filename as title.]]></so
             </trans-unit>
             <trans-unit id="form.participant.salutation" xml:space="preserve">
                 <source>Salutation</source>
+            </trans-unit>
+            <trans-unit id="form.participant.title" xml:space="preserve">
+                <source>Title</source>
             </trans-unit>
             <trans-unit id="form.participant.name.placeholder" xml:space="preserve">
                 <source>Enter participants name</source>

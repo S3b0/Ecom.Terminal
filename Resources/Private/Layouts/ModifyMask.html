@@ -99,12 +99,26 @@
 
                 var counter = $('.js-delete-participant').length,
                     pattern = $('#new-participant').html(),
+                    maxChars = 255,
+                    maxLines = 8,
                     $participants = $('#participants'),
+                    $freetext = $('#freetext'),
                     $addParticipantBtn = $('#js-add-participant'),
                     $remParticipantBtns = $('.js-delete-participant'),
-                    maxParticipants = 14;
+                    maxParticipants = 6;
                 $('#new-participant').remove();
-                $('#freetext').on('change', function() {
+                $('#charsLeft').html(maxChars);
+                $('#linesLeft').html(maxLines);
+                $freetext.attr('maxlength', maxChars);
+                $freetext.on('keydown', function(e) {
+                    var keycode = e.charCode || e.keyCode;
+                    $('#charsLeft').html(maxChars - $(this).val().length);
+                    $('#linesLeft').html(maxLines - $(this).val().split("\n").length);
+                    if ((maxLines - $(this).val().split("\n").length) < 1 && keycode  == 13) {
+                        return false;
+                    }
+                });
+                $freetext.on('change', function() {
                     $participants.toggle($(this).val() === '');
                     $addParticipantBtn.toggle($(this).val() === '');
                     if ($participants.css('display') === 'none') {
