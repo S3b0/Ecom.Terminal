@@ -1,6 +1,6 @@
 /*!
 * Parsley.js
-* Version 2.3.5 - built Sun, Feb 28th 2016, 6:25 am
+* Version 2.3.7 - built Wed, Mar 23rd 2016, 2:56 pm
 * http://parsleyjs.org
 * Guillaume Potier - <guillaume@wisembly.com>
 * Marc-Andre Lafortune - <petroselinum@marc-andre.ca>
@@ -1526,7 +1526,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
       // A field without constraint is valid
       if (!this.hasConstraints()) return $.when();
 
-      // Value could be passed as argument, needed to add more power to 'parsley:field:validate'
+      // Value could be passed as argument, needed to add more power to 'field:validate'
       if ('undefined' === typeof value || null === value) value = this.getValue();
 
       if (!this.needsValidation(value) && true !== force) return $.when();
@@ -1788,7 +1788,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     // See `ParsleyField.getValue()`
     getValue: function getValue() {
       // Value could be overriden in DOM
-      if ('function' === typeof this.options.value) value = this.options.value(this);else if ('undefined' !== typeof this.options.value) return this.options.value;
+      if ('function' === typeof this.options.value) return this.options.value(this);else if ('undefined' !== typeof this.options.value) return this.options.value;
 
       // Radio input case
       if (this.$element.is('input[type=radio]')) return this._findRelated().filter(':checked').val() || '';
@@ -1846,7 +1846,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   ParsleyFactory.prototype = {
     init: function init(options) {
       this.__class__ = 'Parsley';
-      this.__version__ = '2.3.5';
+      this.__version__ = '2.3.7';
       this.__id__ = ParsleyUtils__default.generateID();
 
       // Pre-compute options
@@ -1968,7 +1968,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     actualizeOptions: null,
     _resetOptions: null,
     Factory: ParsleyFactory,
-    version: '2.3.5'
+    version: '2.3.7'
   });
 
   // Supplement ParsleyField and Form with ParsleyAbstract
@@ -2049,9 +2049,11 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
     };
   });
 
-  // Alleviate glaring Firefox bug https://bugzilla.mozilla.org/show_bug.cgi?id=1250521
+  // Alleviate glaring Firefox & IR bugs:
+  //  FF: https://bugzilla.mozilla.org/show_bug.cgi?id=1250521
+  //  IE: https://connect.microsoft.com/IE/feedback/details/1816207
   // See also https://github.com/guillaumepotier/Parsley.js/issues/1068
-  if (/firefox/i.test(navigator.userAgent)) {
+  if (/firefox|msie/i.test(navigator.userAgent)) {
     $(document).on('change', 'select', function (evt) {
       $(evt.target).trigger('input');
     });
