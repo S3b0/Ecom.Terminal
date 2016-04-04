@@ -61,10 +61,10 @@
                                                 <f:then><f:link.action action="toggleAppointment" controller="Administration" arguments="{appointment: appointment, t: tstamp}"><i class="fa fa-toggle-off fa-fw"></i></f:link.action></f:then>
                                                 <f:else><f:link.action action="toggleAppointment" controller="Administration" arguments="{appointment: appointment, t: tstamp}"><i class="fa fa-toggle-on fa-fw"></i></f:link.action></f:else>
                                             </f:if>
-                                            <f:link.action action="editAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.edit')}">
-                                                <i class="fa fa-pencil fa-fw text-default"></i>
-                                            </f:link.action>
                                         </f:if>
+                                        <f:link.action action="editAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.edit')}">
+                                            <i class="fa fa-pencil fa-fw text-default"></i>
+                                        </f:link.action>
                                         <f:link.action action="deleteAppointment" controller="Administration" arguments="{appointment: appointment}" title="{f:translate(id: 'title.appointment.delete')}" onclick="return confirm('{f:translate(id: \"modal.delete.confirm\")}')">
                                             <i class="fa fa-trash-o fa-fw text-danger"></i>
                                         </f:link.action>

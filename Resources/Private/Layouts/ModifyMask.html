@@ -16,6 +16,8 @@
         <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/css/bootstrap-colorpicker.min.css')}" />
         <!-- Parsley CSS -->
         <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/parsleyjs/src/parsley.css')}" />
+        <!-- TinyMCE CSS -->
+        <link rel="stylesheet" href="{f:uri.resource(path: 'bower_components/tinymce/skins/lightgray/skin.min.css')}" />
 
         <!-- jQuery -->
         <script src="{f:uri.resource(path: 'bower_components/jquery/dist/jquery.min.js')}"></script>
@@ -30,6 +32,8 @@
         <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/mjolnic-bootstrap-colorpicker/dist/js/bootstrap-colorpicker.min.js')}"></script>
         <!-- Parsley JS -->
         <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/parsleyjs/dist/parsley.min.js')}"></script>
+        <!-- TinyMCE JS -->
+        <script type="text/javascript" src="{f:uri.resource(path: 'bower_components/tinymce/tinymce.min.js')}"></script>
     </head>
     <body>
         <f:security.ifAuthenticated>
@@ -99,25 +103,12 @@
 
                 var counter = $('.js-delete-participant').length,
                     pattern = $('#new-participant').html(),
-                    maxChars = 255,
-                    maxLines = 8,
                     $participants = $('#participants'),
                     $freetext = $('#freetext'),
                     $addParticipantBtn = $('#js-add-participant'),
                     $remParticipantBtns = $('.js-delete-participant'),
                     maxParticipants = 6;
                 $('#new-participant').remove();
-                $('#charsLeft').html(maxChars);
-                $('#linesLeft').html(maxLines);
-                $freetext.attr('maxlength', maxChars);
-                $freetext.on('keydown', function(e) {
-                    var keycode = e.charCode || e.keyCode;
-                    $('#charsLeft').html(maxChars - $(this).val().length);
-                    $('#linesLeft').html(maxLines - $(this).val().split("\n").length);
-                    if ((maxLines - $(this).val().split("\n").length) < 1 && keycode  == 13) {
-                        return false;
-                    }
-                });
                 $freetext.on('change', function() {
                     $participants.toggle($(this).val() === '');
                     $addParticipantBtn.toggle($(this).val() === '');
@@ -126,6 +117,7 @@
                     }
                 });
                 $addParticipantBtn.on('click', function() {
+                    $participants.show();
                     $('#freetext').val('').parent().hide();
                     if ($('.js-delete-participant').length === maxParticipants) {
                         alert('Maximum of ' + maxParticipants + ' participants reached!');
@@ -160,6 +152,17 @@
                     }
                 });
 
+                $participants.toggle($freetext.val() === '');
+                tinymce.init({
+                    selector: '#freetext',
+                    menubar: false,
+                    plugins: [
+                        'lists preview hr',
+                        'searchreplace wordcount visualchars code',
+                        'table contextmenu paste textcolor'
+                    ],
+                    toolbar: 'undo redo | bold italic | alignleft aligncenter alignright alignjustify | table bullist numlist | print preview | forecolor backcolor | searchreplace paste visualchars code'
+                });
                 $('.flashmessages > div').each(function(e, f) {
                     $(this).delay((e * 500) + 5000).slideUp({duration: 250});
                 });
