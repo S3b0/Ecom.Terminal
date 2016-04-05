@@ -49,6 +49,10 @@ iframe#fullscreen {
 	width: 100%;
 }
 
+td {
+	padding-right: 1em !important;
+}
+
 #user-panel {
 	background-color: #231f20;
 	box-shadow: 0 0 15px #3c3c3c;

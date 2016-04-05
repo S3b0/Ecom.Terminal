@@ -210,7 +210,7 @@ class Appointment
      */
     public function getFreetext()
     {
-        return str_ireplace(' ', '&nbsp;', $this->freetext);
+        return $this->freetext;
     }
 
     /**
