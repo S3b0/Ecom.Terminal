@@ -103,6 +103,7 @@ class AdministrationController extends StandardController
         $this->appointmentRepository->add($newAppointment);
         if (sizeof($participants)) {
             $sorting = 0;
+            $newAppointment->setFreetext('');
             foreach ($participants as $participant) {
                 if ((int)$participant['salutation'] === 0 && $participant['name'] === '') {
                     continue;
@@ -155,6 +156,7 @@ class AdministrationController extends StandardController
             $keepExistingParticipants = 0;
             $keepParticipants = [];
             $sorting = 0;
+            $appointment->setFreetext('');
             foreach ($participants as $participant) {
                 if ((int)$participant['salutation'] === 0 && $participant['name'] === '') {
                     continue;

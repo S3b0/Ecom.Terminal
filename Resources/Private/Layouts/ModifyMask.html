@@ -110,16 +110,9 @@
                     $remParticipantBtns = $('.js-delete-participant'),
                     maxParticipants = 6;
                 $('#new-participant').remove();
-                $freetext.on('change', function() {
-                    $participants.toggle($(this).val() === '');
-                    $addParticipantBtn.toggle($(this).val() === '');
-                    if ($participants.css('display') === 'none') {
-                        $participants.children('div').remove();
-                    }
-                });
                 $addParticipantBtn.on('click', function() {
                     $participants.show();
-                    $('#freetext').val('').parent().hide();
+                    $('#freetext').parent().hide();
                     if ($('.js-delete-participant').length === maxParticipants) {
                         alert('Maximum of ' + maxParticipants + ' participants reached!');
                     } else {
@@ -153,7 +146,6 @@
                     }
                 });
 
-                $participants.toggle($freetext.val() === '');
                 tinymce.init({
                     selector: '#freetext',
                     menubar: false,
